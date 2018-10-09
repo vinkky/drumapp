@@ -1,0 +1,9 @@
+{
+    "presets": [
+      "env",
+      "react",
+     "react-native", "es2015", "stage-0"
+    ],
+    "sourceMaps": true,
+    "plugins": ["transform-object-rest-spread", "transform-decorators-legacy"]
+  }
