@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Tone from "tone";
+
 import "./DrumMachine.css";
 
 const musicData = [
-  [0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1],
-  [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-  [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0],
-  [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0]
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 setTimeout(() => {
@@ -28,6 +29,22 @@ class MusicBox extends React.Component {
 
   constructor(props) {
     super(props);
+    
+    var feedbackDelay = new Tone.PingPongDelay({
+			"delayTime" : "8n",
+			"feedback" : 0.6,
+			"wet" : 0.5
+    }).toMaster();
+    var distortion = new Tone.Distortion(0.2).toMaster();
+    var filter = new Tone.Filter(200, "lowpass").toMaster();
+    var reverb = new Tone.Reverb({
+      "decay" : 6.5,
+      "preDelay" : 0.5,
+      "wet": 1
+    }).toMaster();
+    var pitch = new Tone.PitchShift(20).toMaster();
+    var panVol = new Tone.PanVol(0).toMaster();
+
     const keys = new Tone.Players(
       {
         A: "http://localhost:3000/src/sounds/Hihats.[wav|wav]",
@@ -35,6 +52,7 @@ class MusicBox extends React.Component {
         E: "http://localhost:3000/src/sounds/Clap.[wav|wav]",
         "F#": "http://localhost:3000/src/sounds/Kick2.[wav|wav]"
       },
+      
       {
         fadeOut: "64n"
       }
@@ -46,6 +64,7 @@ class MusicBox extends React.Component {
           if (this.props.data[y][x]) {
             keys.get(noteNames[y]).start(time, 0, "16n", 0);
           }
+          
         }
         this.setState({ index: x });
       },
@@ -53,6 +72,16 @@ class MusicBox extends React.Component {
       "16n"
     );
     Tone.Transport.bpm.value = 130;
+    //keys.get(noteNames[2]).chain(feedbackDelay, reverb, panVol, distortion, pitch);
+    //keys.get(noteNames[2]).connect(feedbackDelay);
+    //keys.get(noteNames[2]).connect(reverb);
+    keys.get(noteNames[2]).connect(filter);
+    keys.get(noteNames[2]).connect(panVol);
+    keys.get(noteNames[2]).volume.value = -12;
+    //keys.get(noteNames[2]).connect(distortion);
+    //keys.get(noteNames[2]).connect(pitch);
+
+    keys.get(noteNames[3]).mute = false;
 
     Tone.Transport.start();
   }
@@ -66,12 +95,14 @@ class MusicBox extends React.Component {
           data={this.props.data}
           index={this.state.index}
         />
-        <PlayButton loop={this.loop} />
+        <PlayButton loop={this.loop} /> 
+        <Effects channels={this.keys}/>
       </div>
     );
   }
 }
-const names = ["bass", "clap", "snare", "highhat"];
+const names = ["bass", "clap", "snare", "hihat"];
+
 class ScorePlot extends React.Component {
   handleChange = (x, y) => {
     return e => {
@@ -88,11 +119,8 @@ class ScorePlot extends React.Component {
               <div>{names[y]}</div>
               {[...new Array(this.props.width)].map((_, x) => (
                 <td key={x}>
-                  <input
-                    type="checkbox"
-                    checked={this.props.data[y][x]}
-                    onChange={this.handleChange(x, y)}
-                  />
+                    <input className={x%4 ===0 ?'Valkata' : null} type='checkbox' checked={this.props.data[y][x]}
+                    onChange={this.handleChange(x, y)}/>
                 </td>
               ))}
             </tr>
@@ -100,6 +128,7 @@ class ScorePlot extends React.Component {
         </tbody>
         <tfoot>
           <tr>
+            <div></div>
             {[...new Array(this.props.width)].map((_, x) => (
               <td key={x}>
                 <input
@@ -135,6 +164,18 @@ class PlayButton extends React.Component {
     return (
       <button type="button" onClick={this.onClick}>
         {this.state.isPlaying ? "Stop" : "Play"}
+      </button>
+    );
+  }
+}
+class Effects extends React.Component {
+  state = {
+  };
+
+  render() {
+    return (
+      <button>
+        sss
       </button>
     );
   }
