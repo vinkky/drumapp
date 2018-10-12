@@ -34,7 +34,7 @@ class MusicBox extends React.Component {
       delayTime: "8n",
       feedback: 0.6,
       wet: 0.5
-    }).toMaster();
+    });
     var env = new Tone.Envelope({
       attack: 1.1,
       decay: 3.2,
@@ -42,15 +42,55 @@ class MusicBox extends React.Component {
       release: 0.8
     });
     var gainNode = Tone.context.createGain();
-    var distortion = new Tone.Distortion(0.2).toMaster();
-    var filter = new Tone.Filter(200, "lowpass").toMaster();
+    // Distortion effect to all channels
+    var distortion0 = new Tone.Distortion(0.0);
+    var distortion1 = new Tone.Distortion(0.0);
+    var distortion2 = new Tone.Distortion(1);
+    var distortion3 = new Tone.Distortion(1);
+    var dist = [];
+    dist.push(distortion0, distortion1, distortion2, distortion3);
+    // Pitch effect to all channels
+    var pitch0 = new Tone.PitchShift(0);
+    var pitch1 = new Tone.PitchShift(5);
+    var pitch2 = new Tone.PitchShift(6);
+    var pitch3 = new Tone.PitchShift(7);
+    var pit = [];
+    pit.push(pitch0, pitch1, pitch2, pitch3);
+    // Feedback Delay to all channels
+    var feedbackDelay0 = new Tone.PingPongDelay({
+      delayTime: "8n",
+      feedback: 0.6,
+      wet: 0
+    });
+    var feedbackDelay1 = new Tone.PingPongDelay({
+      delayTime: "8n",
+      feedback: 0.6,
+      wet: 0.5
+    });
+    var feedbackDelay2 = new Tone.PingPongDelay({
+      delayTime: "8n",
+      feedback: 0.6,
+      wet: 0.5
+    });
+    var feedbackDelay3 = new Tone.PingPongDelay({
+      delayTime: "8n",
+      feedback: 0.6,
+      wet: 0.5
+    });
+    var feedbackDelay = [];
+    feedbackDelay.push(
+      feedbackDelay0,
+      feedbackDelay1,
+      feedbackDelay2,
+      feedbackDelay3
+    );
+
+    var filter = new Tone.Filter(200, "lowpass");
     var reverb = new Tone.Reverb({
       decay: 6.5,
       preDelay: 0.5,
       wet: 1
-    }).toMaster();
-    var pitch = new Tone.PitchShift(20).toMaster();
-    var panVol = new Tone.PanVol(0).toMaster();
+    });
 
     const keys = new Tone.Players(
       {
@@ -64,16 +104,14 @@ class MusicBox extends React.Component {
       {
         fadeOut: "64n"
       }
-    ).toMaster();
+    );
+
     const noteNames = "F# E C# A".split(" ");
-    for (let y = 0; y < noteNames.length; y++) {
-      keys.get(noteNames[y]).connect(feedbackDelay);
-      keys.get(noteNames[y]).connect(reverb);
-      keys.get(noteNames[y]).connect(filter);
-      keys.get(noteNames[y]).connect(panVol);
-      keys.get(noteNames[y]).volume.value = -12;
-      keys.get(noteNames[y]).connect(distortion);
-      keys.get(noteNames[y]).connect(pitch);
+
+    for (var y in noteNames) {
+      keys
+        .get(noteNames[y])
+        .chain(dist[y], pit[y], feedbackDelay[y], Tone.Master);
     }
     this.loop = new Tone.Sequence(
       (time, x) => {
