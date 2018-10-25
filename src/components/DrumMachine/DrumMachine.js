@@ -8,6 +8,7 @@ const musicData = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
@@ -30,7 +31,9 @@ class MusicBox extends React.Component {
       tracks: [
         { name: "kick-808", volume: 0, muted: false, note: "4n" },
         { name: "clap-808", volume: 0, muted: false, note: "8n" },
-        { name: "hihat-808", volume: 0, muted: false, note: "16n" }
+        { name: "snare-808", volume: 0, muted: false, note: "8n" },
+        { name: "hihat-808", volume: 0, muted: false, note: "16n" },
+        { name: "tom-808", volume: 0, muted: false, note: "8n" },
       ],
       velocities: [
         1,
@@ -119,6 +122,22 @@ class MusicBox extends React.Component {
       [...new Array(16)].map((_, i) => i),
       "16n"
     );
+
+
+    var noise = new Tone.Noise("white").start();
+    noise.volume.value = -30;
+
+    //make an autofilter to shape the noise
+    var autoFilter = new Tone.AutoFilter({
+      "frequency" : "8m",
+      "min" : -400,
+      "max" : -200
+    }).connect(Tone.Master);
+    
+    //connect the noise
+    noise.connect(autoFilter);
+    //start the autofilter LFO
+
     Tone.Transport.bpm.value = 130;
     Tone.Transport.start();
   }
@@ -167,6 +186,9 @@ class ScorePlot extends React.Component {
         break;
       case 52:
         this.setState({ instrument: 3 });
+        break;
+      case 53:
+        this.setState({ instrument: 4 });
         break;
       default:
         return false;
