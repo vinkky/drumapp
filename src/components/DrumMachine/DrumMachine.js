@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import Tone from "tone";
 
@@ -23,101 +23,95 @@ function audioScene() {
 }
 
 class MusicBox extends React.Component {
-  state = {
-    index: 0
-  };
-
   constructor(props) {
     super(props);
+    this.state = {
+      index: 0,
+      tracks: [
+        { name: "kick-808", volume: 0, muted: false, note: "4n" },
+        { name: "clap-808", volume: 0, muted: false, note: "8n" },
+        { name: "hihat-808", volume: 0, muted: false, note: "16n" }
+      ],
+      velocities: [
+        1,
+        0.65,
+        0.75,
+        0.85,
+        1,
+        0.65,
+        0.75,
+        0.85,
+        1,
+        0.65,
+        0.75,
+        0.85,
+        1,
+        0.65,
+        0.75,
+        0.85
+      ]
+    };
 
-    var feedbackDelay = new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.6,
-      wet: 0.5
-    });
-    var env = new Tone.Envelope({
-      attack: 1.1,
-      decay: 3.2,
-      sustain: 1,
-      release: 0.8
-    });
-    var gainNode = Tone.context.createGain();
-    // Distortion effect to all channels
-    var distortion0 = new Tone.Distortion(0.0);
-    var distortion1 = new Tone.Distortion(0.0);
-    var distortion2 = new Tone.Distortion(1);
-    var distortion3 = new Tone.Distortion(1);
-    var dist = [];
-    dist.push(distortion0, distortion1, distortion2, distortion3);
-    // Pitch effect to all channels
-    var pitch0 = new Tone.PitchShift(0);
-    var pitch1 = new Tone.PitchShift(5);
-    var pitch2 = new Tone.PitchShift(6);
-    var pitch3 = new Tone.PitchShift(7);
-    var pit = [];
-    pit.push(pitch0, pitch1, pitch2, pitch3);
-    // Feedback Delay to all channels
-    var feedbackDelay0 = new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.6,
-      wet: 0
-    });
-    var feedbackDelay1 = new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.6,
-      wet: 0.5
-    });
-    var feedbackDelay2 = new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.6,
-      wet: 0.5
-    });
-    var feedbackDelay3 = new Tone.PingPongDelay({
-      delayTime: "8n",
-      feedback: 0.6,
-      wet: 0.5
-    });
-    var feedbackDelay = [];
-    feedbackDelay.push(
-      feedbackDelay0,
-      feedbackDelay1,
-      feedbackDelay2,
-      feedbackDelay3
-    );
+    // create = (tracks, beatNotifier) => {
+    //   const loop = new Tone.Sequence(
+    //     loopProcessor(tracks, beatNotifier),
+    //     new Array(16).fill(0).map((_, i) => i),
+    //     "16n"
+    //   );
+    // };
 
-    var filter = new Tone.Filter(200, "lowpass");
-    var reverb = new Tone.Reverb({
-      decay: 6.5,
-      preDelay: 0.5,
-      wet: 1
-    });
+    // loopProcessor = (tracks, beatNotifier) => {
+    //   // XXX this may be now totally unnecessary as we can infer the sample url
+    //   // directly from the name
+    //   const urls = tracks.reduce((acc, {name}) => {
+    //     return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
+    //   }, {});
 
+    //   const keys = new Tone.Players({urls},       {
+    //     fadeOut: "64n"
+    //   }).toMaster();
+
+    //   return (time, index) => {
+    //     beatNotifier(index);
+    //     tracks.forEach(({name, vol, muted, beats}) => {
+    //       if (beats[index]) {
+    //         try {
+    //           keys.start(name, time, 0, "1n", 0, muted ? 0 : velocities[index] * vol);
+    //         } catch(e) {
+    //         }
+    //       }
+    //     });
+    //   };
+    // }
+    const urls = this.state.tracks.reduce((acc, { name }) => {
+      return {
+        ...acc,
+        [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`
+      };
+    }, {});
+    console.log(urls);
     const keys = new Tone.Players(
-      {
-        A: "http://localhost:3000/src/sounds/Hihats.[wav|wav]",
-        "C#":
-          "https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/Cs2.[mp3|ogg]",
-        E: "http://localhost:3000/src/sounds/Clap.[wav|wav]",
-        "F#": "http://localhost:3000/src/sounds/Kick2.[wav|wav]"
-      },
+      urls,
 
       {
         fadeOut: "64n"
       }
-    );
+    ).toMaster();
 
-    const noteNames = "F# E C# A".split(" ");
-
-    for (var y in noteNames) {
-      keys
-        .get(noteNames[y])
-        .chain(dist[y], pit[y], feedbackDelay[y], Tone.Master);
-    }
     this.loop = new Tone.Sequence(
       (time, x) => {
-        for (let y = 0; y < noteNames.length; y++) {
+        for (let y = 0; y < this.state.tracks.length; y++) {
           if (this.props.data[y][x]) {
-            keys.get(noteNames[y]).start(time, 0, "16n", 0);
+            try {
+              keys
+                .get(this.state.tracks[y].name)
+                .start(time, 0, this.state.tracks[y].note, 0);
+              keys
+                .get(this.state.tracks[y].name).volume.value = this.state
+                  .tracks[y].muted
+                  ? -Infinity
+                  : this.state.tracks[y].volume;
+            } catch (e) {}
           }
         }
         this.setState({ index: x });
@@ -126,18 +120,6 @@ class MusicBox extends React.Component {
       "16n"
     );
     Tone.Transport.bpm.value = 130;
-    //keys.get(noteNames[2]).chain(feedbackDelay, reverb, panVol, distortion, pitch);
-    //keys.get(noteNames[2]).connect(feedbackDelay);
-    env.connect(gainNode.gain);
-    //keys.get(noteNames[2]).connect(reverb);
-    //keys.get(noteNames[2]).connect(filter);
-    //keys.get(noteNames[2]).connect(panVol);
-    //keys.get(noteNames[2]).volume.value = -12;
-    //keys.get(noteNames[2]).connect(distortion);
-    //keys.get(noteNames[2]).connect(pitch);
-
-    keys.get(noteNames[3]).mute = false;
-
     Tone.Transport.start();
   }
 
@@ -149,14 +131,13 @@ class MusicBox extends React.Component {
           height={this.props.data.length}
           data={this.props.data}
           index={this.state.index}
+          tracks={this.state.tracks}
         />
         <PlayButton loop={this.loop} />
-        <Effects loop={this.loop} />
       </div>
     );
   }
 }
-const names = ["bass", "clap", "snare", "hihat"];
 
 class ScorePlot extends React.Component {
   state = {
@@ -212,7 +193,7 @@ class ScorePlot extends React.Component {
                 : null}
               {y === this.state.instrument ? (
                 <div>
-                  <button>{names[y]}</button>
+                  <button>{this.props.tracks[y].name}</button>
                 </div>
               ) : null}
             </tr>
