@@ -93,9 +93,7 @@ class MusicBox extends React.Component {
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
-
         render() {
-
             return (
                 <div>
                     <ScorePlot
