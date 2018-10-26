@@ -27,7 +27,6 @@ class EffectController extends React.Component {
   };
 
   handleChange = value => {
-      console.log(`Changed value ${value}`);
       this.setState({ value });
   };
 
@@ -38,8 +37,6 @@ class EffectController extends React.Component {
   };
 
   render() {
-      const { classes } = this.props;
-      const { value } = this.state;
       return (
           <div
               style={{

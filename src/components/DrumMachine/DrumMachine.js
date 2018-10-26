@@ -24,123 +24,121 @@ function audioScene() {
 }
 
 class MusicBox extends React.Component {
+    sequence
     constructor(props) {
         super(props);
         this.state = {
             index: 0,
             tracks: [
-                { name: "kick-808", volume: 0, muted: false, note: "4n" },
-                { name: "clap-808", volume: 0, muted: false, note: "8n" },
-                { name: "snare-808", volume: 0, muted: false, note: "8n" },
-                { name: "hihat-808", volume: 0, muted: false, note: "16n" },
-                { name: "tom-808", volume: 0, muted: false, note: "8n" },
+                {id: 1,  name: "kick-808", volume: 0, muted: false, note: "4n", beats: initBeats(16) },
+                {id: 2,  name: "clap-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 3,  name: "snare-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 4,  name: "hihat-808", volume: 0, muted: false, note: "16n", beats: initBeats(16) },
+                {id: 5,  name: "tom-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
             ],
+            currentBeat: -1,
             velocities: [
-                1,
-                0.65,
-                0.75,
-                0.85,
-                1,
-                0.65,
-                0.75,
-                0.85,
-                1,
-                0.65,
-                0.75,
-                0.85,
-                1,
-                0.65,
-                0.75,
-                0.85
+            // will be some volocity values .05 0.8 etc
             ]
         };
+        function initBeats(n) {
+            return new Array(n).fill(false);
+        }
 
-        // create = (tracks, beatNotifier) => {
-        //   const loop = new Tone.Sequence(
-        //     loopProcessor(tracks, beatNotifier),
-        //     new Array(16).fill(0).map((_, i) => i),
-        //     "16n"
-        //   );
-        // };
+        // const urls = this.state.tracks.reduce((acc, { name }) => {
+        //     return {
+        //         ...acc,
+        //         [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`
+        //     };
+        // }, {});
+        // const keys = new Tone.Players(
+        //     urls,
+        //     {
+        //         fadeOut: "64n"
+        //     }
+        // ).toMaster();
 
-        // loopProcessor = (tracks, beatNotifier) => {
-        //   // XXX this may be now totally unnecessary as we can infer the sample url
-        //   // directly from the name
-        //   const urls = tracks.reduce((acc, {name}) => {
-        //     return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
-        //   }, {});
-
-        //   const keys = new Tone.Players({urls},       {
-        //     fadeOut: "64n"
-        //   }).toMaster();
-
-        //   return (time, index) => {
-        //     beatNotifier(index);
-        //     tracks.forEach(({name, vol, muted, beats}) => {
-        //       if (beats[index]) {
-        //         try {
-        //           keys.start(name, time, 0, "1n", 0, muted ? 0 : velocities[index] * vol);
-        //         } catch(e) {
+        // this.loop = new Tone.Sequence(
+        //     (time, x) => {
+        //         for (let y = 0; y < this.state.tracks.length; y++) {
+        //             if (this.props.data[y][x]) {
+        //                 try {
+        //                     keys
+        //                         .get(this.state.tracks[y].name)
+        //                         .start(time, 0, this.state.tracks[y].note, 0);
+        //                     keys
+        //                         .get(this.state.tracks[y].name).volume.value = this.state
+        //                             .tracks[y].muted
+        //                             ? -Infinity
+        //                             : this.state.tracks[y].volume;
+        //                 } catch (e) {}
+        //             }
         //         }
-        //       }
-        //     });
-        //   };
-        // }
-        const urls = this.state.tracks.reduce((acc, { name }) => {
-            return {
-                ...acc,
-                [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`
-            };
-        }, {});
-        console.log(urls);
-        const keys = new Tone.Players(
-            urls,
+        //         this.setState({ index: x });
+        //     },
+        //     [...new Array(16)].map((_, i) => i),
+        //     "16n"
+        // );
 
-            {
+        // Tone.Transport.bpm.value = 130;
+        // Tone.Transport.start();
+        this.sequence = this.create(this.state.tracks, this.updateCurrentBeat);
+    }
+
+        create = (tracks, beatNotifier) => {
+            const loop = new Tone.Sequence(
+                this.loopProcessor(tracks, beatNotifier),
+                [...new Array(16)].map((_, i) => i),
+                "16n"
+            );
+            Tone.Transport.bpm.value = 120;
+            Tone.Transport.start();
+            return loop;
+        };
+
+        loopProcessor = (tracks, beatNotifier) => {
+            const urls = tracks.reduce((acc, {name}) => {
+                return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
+            }, {});
+            const keys = new Tone.Players(urls,       {
                 fadeOut: "64n"
-            }
-        ).toMaster();
+            }).toMaster();
 
-        this.loop = new Tone.Sequence(
-            (time, x) => {
-                for (let y = 0; y < this.state.tracks.length; y++) {
-                    if (this.props.data[y][x]) {
+            return (time, index) => {
+                beatNotifier(index);
+                tracks.forEach(({name, volume, muted, note, beats}) => {
+                    if (beats[index]) {
                         try {
                             keys
-                                .get(this.state.tracks[y].name)
-                                .start(time, 0, this.state.tracks[y].note, 0);
+                                .get(name)
+                                .start(time, 0, note, 0);
                             keys
-                                .get(this.state.tracks[y].name).volume.value = this.state
-                                    .tracks[y].muted
+                                .get(name).volume.value = muted
                                     ? -Infinity
-                                    : this.state.tracks[y].volume;
-                        } catch (e) {return false;}
+                                    : volume;
+                        } catch(e) {}
                     }
-                }
-                this.setState({ index: x });
-            },
-            [...new Array(16)].map((_, i) => i),
-            "16n"
-        );
+                });
+            };
+        }
+        updateCurrentBeat = (beat) => {
+            this.setState({currentBeat: beat});
+        };
+        render() {
 
-        Tone.Transport.bpm.value = 130;
-        Tone.Transport.start();
-    }
-
-    render() {
-        return (
-            <div>
-                <ScorePlot
-                    width={this.props.data[0].length}
-                    height={this.props.data.length}
-                    data={this.props.data}
-                    index={this.state.index}
-                    tracks={this.state.tracks}
-                />
-                <PlayButton loop={this.loop} />
-            </div>
-        );
-    }
+            return (
+                <div>
+                    <ScorePlot
+                        width={this.props.data[0].length}
+                        height={this.props.data.length}
+                        data={this.props.data}
+                        index={this.state.index}
+                        tracks={this.state.tracks}
+                    />
+                    <PlayButton sequence={this.sequence} />
+                </div>
+            );
+        }
 }
 
 class ScorePlot extends React.Component {
@@ -234,9 +232,9 @@ class PlayButton extends React.Component {
       const isPlaying = !this.state.isPlaying;
       this.setState({ isPlaying });
       if (isPlaying) {
-          this.props.loop.start();
+          this.props.sequence.start();
       } else {
-          this.props.loop.stop();
+          this.props.sequence.stop();
       }
   };
 
