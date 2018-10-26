@@ -1,7 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Tone from "tone";
-
+import * as trackControls from "./Controls/Trackcontrols";
+import {create}  from "./Controls/SequenceControls";
 import "./DrumMachine.css";
 
 const musicData = [
@@ -24,6 +25,7 @@ function audioScene() {
 }
 
 class MusicBox extends React.Component {
+
     sequence
     constructor(props) {
         super(props);
@@ -42,7 +44,7 @@ class MusicBox extends React.Component {
             ]
         };
         function initBeats(n) {
-            return new Array(n).fill(false);
+            return new Array(n).fill(true);
         }
 
         // const urls = this.state.tracks.reduce((acc, { name }) => {
@@ -82,48 +84,16 @@ class MusicBox extends React.Component {
 
         // Tone.Transport.bpm.value = 130;
         // Tone.Transport.start();
-        this.sequence = this.create(this.state.tracks, this.updateCurrentBeat);
+        this.create = create.bind(this);
+        this.sequence = create(this.state.tracks, this.updateCurrentBeat);
+        
     }
 
-        create = (tracks, beatNotifier) => {
-            const loop = new Tone.Sequence(
-                this.loopProcessor(tracks, beatNotifier),
-                [...new Array(16)].map((_, i) => i),
-                "16n"
-            );
-            Tone.Transport.bpm.value = 120;
-            Tone.Transport.start();
-            return loop;
-        };
 
-        loopProcessor = (tracks, beatNotifier) => {
-            const urls = tracks.reduce((acc, {name}) => {
-                return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
-            }, {});
-            const keys = new Tone.Players(urls,       {
-                fadeOut: "64n"
-            }).toMaster();
-
-            return (time, index) => {
-                beatNotifier(index);
-                tracks.forEach(({name, volume, muted, note, beats}) => {
-                    if (beats[index]) {
-                        try {
-                            keys
-                                .get(name)
-                                .start(time, 0, note, 0);
-                            keys
-                                .get(name).volume.value = muted
-                                    ? -Infinity
-                                    : volume;
-                        } catch(e) {}
-                    }
-                });
-            };
-        }
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
+
         render() {
 
             return (
