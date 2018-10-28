@@ -94,13 +94,14 @@ class MusicBox extends React.Component {
             this.setState({currentBeat: beat});
         };
         render() {
+          console.log(this.state.currentBeat)
             return (
                 <div>
                     <ScorePlot
                         width={this.props.data[0].length}
                         height={this.props.data.length}
                         data={this.props.data}
-                        index={this.state.index}
+                        index={this.state.currentBeat}
                         tracks={this.state.tracks}
                     />
                     <PlayButton sequence={this.sequence} />

@@ -41,6 +41,5 @@ function loopProcessor  (tracks, beatNotifier) {
                 } catch(e) {}
             }
         });
-        this.setState({ index: index });
     };
 }
