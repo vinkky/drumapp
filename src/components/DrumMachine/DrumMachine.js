@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Tone from "tone";
 import * as trackControls from "./Controls/Trackcontrols";
-import {create}  from "./Controls/SequenceControls";
+import * as loopControls  from "./Controls/SequenceControls";
 import "./DrumMachine.css";
 
 const musicData = [
@@ -26,7 +26,7 @@ function audioScene() {
 
 class MusicBox extends React.Component {
 
-    sequence
+    loop
     constructor(props) {
         super(props);
         this.state = {
@@ -44,57 +44,33 @@ class MusicBox extends React.Component {
             ]
         };
         function initBeats(n) {
-            return new Array(n).fill(true);
+            return new Array(n).fill(false);
         }
-
-        // const urls = this.state.tracks.reduce((acc, { name }) => {
-        //     return {
-        //         ...acc,
-        //         [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`
-        //     };
-        // }, {});
-        // const keys = new Tone.Players(
-        //     urls,
-        //     {
-        //         fadeOut: "64n"
-        //     }
-        // ).toMaster();
-
-        // this.loop = new Tone.Sequence(
-        //     (time, x) => {
-        //         for (let y = 0; y < this.state.tracks.length; y++) {
-        //             if (this.props.data[y][x]) {
-        //                 try {
-        //                     keys
-        //                         .get(this.state.tracks[y].name)
-        //                         .start(time, 0, this.state.tracks[y].note, 0);
-        //                     keys
-        //                         .get(this.state.tracks[y].name).volume.value = this.state
-        //                             .tracks[y].muted
-        //                             ? -Infinity
-        //                             : this.state.tracks[y].volume;
-        //                 } catch (e) {}
-        //             }
-        //         }
-        //         this.setState({ index: x });
-        //     },
-        //     [...new Array(16)].map((_, i) => i),
-        //     "16n"
-        // );
-
-        // Tone.Transport.bpm.value = 130;
-        // Tone.Transport.start();
-        this.create = create.bind(this);
-        this.sequence = create(this.state.tracks, this.updateCurrentBeat);
+        this.create = loopControls.create.bind(this);
+        this.loop = loopControls.create(this.state.tracks, this.updateCurrentBeat);
         
     }
-
-
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
+        updateTracks = (newTracks) => {
+            this.loop = loopControls.update(this.loop, newTracks, this.updateCurrentBeat);
+            this.setState({tracks: newTracks});
+        };
+        toggleTrackBeat = (id, beat) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.toggleTrackBeat(tracks, id, beat));
+        };
+        muteTrack = (id) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.muteTrack(tracks, id));
+        };
+        clearTrack = (id) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.clearTrack(tracks, id));
+        };
+
         render() {
-          console.log(this.state.currentBeat)
             return (
                 <div>
                     <ScorePlot
@@ -103,8 +79,9 @@ class MusicBox extends React.Component {
                         data={this.props.data}
                         index={this.state.currentBeat}
                         tracks={this.state.tracks}
+                        toggleTrackBeat={this.toggleTrackBeat}
                     />
-                    <PlayButton sequence={this.sequence} />
+                    <PlayButton loop={this.loop} />
                 </div>
             );
         }
@@ -149,7 +126,7 @@ class ScorePlot extends React.Component {
   render() {
       return (
           <table>
-              <tbody>
+              {/* <tbody>
                   {[...new Array(this.props.height)].map((_, y) => (
                       <tr key={y}>
                           {y === this.state.instrument
@@ -172,7 +149,30 @@ class ScorePlot extends React.Component {
                           ) : null}
                       </tr>
                   ))}
-              </tbody>
+              </tbody> */}
+              <tbody>{
+                  this.props.tracks.map((track, i) => {
+                      return (
+                          <tr key={i} className="track">
+
+                              { i === this.state.instrument ? 
+                                  track.beats.map((v, beat) => {
+                                      const beatClass = v ? "active" : beat === this.props.index ? "current" : "";
+                                      return (
+                                          <td key={beat} className={`beat ${beatClass}`}>
+                                              <a href="" onClick={(event) => {
+                                                  event.preventDefault();
+                                                  this.props.toggleTrackBeat(track.id, beat);
+                                              }} />
+                                          </td>
+                                      );
+                                  }) : null
+                              }
+
+                          </tr>
+                      );
+                  })
+              }</tbody>
               <thead>
                   <tr>
                       <div />
@@ -201,9 +201,9 @@ class PlayButton extends React.Component {
       const isPlaying = !this.state.isPlaying;
       this.setState({ isPlaying });
       if (isPlaying) {
-          this.props.sequence.start();
+          this.props.loop.start();
       } else {
-          this.props.sequence.stop();
+          this.props.loop.stop();
       }
   };
 
