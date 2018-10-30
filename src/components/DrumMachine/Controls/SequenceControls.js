@@ -28,7 +28,7 @@ function loopProcessor  (tracks, beatNotifier) {
 
     return (time, index) => {
         beatNotifier(index);
-        tracks.forEach(({name, volume, muted, note, beats}) => {
+        tracks.forEach(({name, vol, muted, note, beats}) => {
             if (beats[index]) {
                 try {
                     keys
@@ -37,7 +37,7 @@ function loopProcessor  (tracks, beatNotifier) {
                     keys
                         .get(name).volume.value = muted
                             ? -Infinity
-                            : volume;
+                            : vol;
                 } catch(e) {}
             }
         });

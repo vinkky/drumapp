@@ -5,6 +5,10 @@ import * as trackControls from "./Controls/Trackcontrols";
 import * as loopControls  from "./Controls/SequenceControls";
 import "./DrumMachine.css";
 
+import Checkbox from "@material-ui/core/Checkbox";
+
+import samples from "../../samples";
+
 const musicData = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -25,18 +29,17 @@ function audioScene() {
 }
 
 class MusicBox extends React.Component {
-
     loop
     constructor(props) {
         super(props);
         this.state = {
             index: 0,
             tracks: [
-                {id: 1,  name: "kick-808", volume: 0, muted: false, note: "4n", beats: initBeats(16) },
-                {id: 2,  name: "clap-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
-                {id: 3,  name: "snare-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
-                {id: 4,  name: "hihat-808", volume: 0, muted: false, note: "16n", beats: initBeats(16) },
-                {id: 5,  name: "tom-808", volume: 0, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16) },
+                {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16) },
+                {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
             ],
             currentBeat: -1,
             velocities: [
@@ -46,10 +49,10 @@ class MusicBox extends React.Component {
         function initBeats(n) {
             return new Array(n).fill(false);
         }
-        this.create = loopControls.create.bind(this);
         this.loop = loopControls.create(this.state.tracks, this.updateCurrentBeat);
         
     }
+    
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
@@ -65,12 +68,21 @@ class MusicBox extends React.Component {
             const {tracks} = this.state;
             this.updateTracks(trackControls.muteTrack(tracks, id));
         };
+        setTrackVolume = (id, vol) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.setTrackVolume(tracks, id, vol));
+        };
+        updateTrackSample = (id, sample) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.updateTrackSample(tracks, id, sample));
+        };
         clearTrack = (id) => {
             const {tracks} = this.state;
             this.updateTracks(trackControls.clearTrack(tracks, id));
         };
 
         render() {
+            console.log('render')
             return (
                 <div>
                     <ScorePlot
@@ -80,6 +92,10 @@ class MusicBox extends React.Component {
                         index={this.state.currentBeat}
                         tracks={this.state.tracks}
                         toggleTrackBeat={this.toggleTrackBeat}
+                        muteTrack={this.muteTrack}
+                        clearTrack={this.clearTrack}
+                        setTrackVolume={this.setTrackVolume}
+                        updateTrackSample={this.updateTrackSample}
                     />
                     <PlayButton loop={this.loop} />
                 </div>
@@ -94,12 +110,6 @@ class ScorePlot extends React.Component {
   componentWillMount() {
       window.addEventListener("keydown", this.handleKeyboardInput.bind(this));
   }
-  handleChange = (x, y) => {
-      return e => {
-          this.props.data[y][x] = +e.currentTarget.checked;
-          this.forceUpdate();
-      };
-  };
 
   handleKeyboardInput = e => {
       const code = e.keyCode ? e.keyCode : e.which;
@@ -126,30 +136,6 @@ class ScorePlot extends React.Component {
   render() {
       return (
           <table>
-              {/* <tbody>
-                  {[...new Array(this.props.height)].map((_, y) => (
-                      <tr key={y}>
-                          {y === this.state.instrument
-                              ? [...new Array(this.props.width)].map((_, x) => (
-                                  <td key={x}>
-                                      <input
-                                          className={x % 4 === 0 ? "Valkata" : null}
-                                          type="checkbox"
-                                          checked={this.props.data[y][x]}
-                                          onChange={this.handleChange(x, y)}
-                                          onMouseMove={this.handleChange(x, y)}
-                                      />
-                                  </td>
-                              ))
-                              : null}
-                          {y === this.state.instrument ? (
-                              <div>
-                                  <button>{this.props.tracks[y].name}</button>
-                              </div>
-                          ) : null}
-                      </tr>
-                  ))}
-              </tbody> */}
               <tbody>{
                   this.props.tracks.map((track, i) => {
                       return (
@@ -168,14 +154,29 @@ class ScorePlot extends React.Component {
                                       );
                                   }) : null
                               }
-
                           </tr>
                       );
                   })
               }</tbody>
               <thead>
+                  {
+                      this.props.tracks.map((track, i) => {
+                          return (
+                              <tr key={i} className="track">
+                                  <th>
+                                      <SampleSelector id={track.id} current={track.name} onChange={this.props.updateTrackSample} />
+                                  </th>
+                                  <td className="mute">
+                                      <Checkbox
+                                          checked={!track.muted}
+                                          onChange={() => this.props.muteTrack(track.id)}
+                                      />
+                                  </td>
+                              </tr>
+                          );
+                      })
+                  }
                   <tr>
-                      <div />
                       {[...new Array(this.props.width)].map((_, x) => (
                           <td key={x} style={{}}>
                               <input
@@ -190,6 +191,46 @@ class ScorePlot extends React.Component {
           </table>
       );
   }
+}
+class SampleSelector extends React.Component {
+    state = {
+        open: false
+    };
+    constructor(props) {
+        super(props);
+        this.state = {open: false};
+    }
+  
+    open = (event) => {
+        event.preventDefault();
+        this.setState({open: true});
+    };
+  
+    close = () => {
+        this.setState({open: false});
+    };
+  
+    onChange = (event) => {
+        const {id, onChange} = this.props;
+        onChange(id, event.target.value);
+        this.close();
+    };
+  
+    render() {
+        const {current} = this.props;
+        const {open} = this.state;
+        if (open) {
+            return (
+                <select autoFocus value={current} onChange={this.onChange} onBlur={this.close}>{
+                    samples.map((sample, i) => {
+                        return <option key={i}>{sample}</option>;
+                    })
+                }</select>
+            );
+        } else {
+            return <a href="" onClick={this.open}>{current}</a>;
+        }
+    }
 }
 
 class PlayButton extends React.Component {

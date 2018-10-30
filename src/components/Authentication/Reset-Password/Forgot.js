@@ -149,7 +149,7 @@ class Forgot extends Component {
   handleSubmit(e) {
     e.preventDefault();
     axios
-      .post("http://localhost:5003/users/forgot", {
+      .post("http://localhost:5000/users/forgot", {
         email: this.state.email
       })
       .then(response => {

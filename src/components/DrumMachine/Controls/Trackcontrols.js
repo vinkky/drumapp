@@ -42,12 +42,12 @@ export function toggleTrackBeat(tracks, id, beat) {
     });
 }
 
-export function setTrackVolume(tracks, id, volume) {
+export function setTrackVolume(tracks, id, vol) {
     return tracks.map((track) => {
         if (track.id !== id) {
             return track;
         } else {
-            return {...track, volume};
+            return {...track, vol};
         }
     });
 }
