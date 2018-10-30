@@ -6,6 +6,9 @@ import * as loopControls  from "./Controls/SequenceControls";
 import "./DrumMachine.css";
 
 import Checkbox from "@material-ui/core/Checkbox";
+import ClearIcon from "@material-ui/icons/DeleteTwoTone";
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
 
 import samples from "../../samples";
 
@@ -35,7 +38,7 @@ class MusicBox extends React.Component {
         this.state = {
             index: 0,
             tracks: [
-                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16) },
+                {id: 1,  name: "kick-808", vol: -60, muted: false, note: "4n", beats: initBeats(16) },
                 {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
                 {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
                 {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16) },
@@ -82,7 +85,6 @@ class MusicBox extends React.Component {
         };
 
         render() {
-            console.log('render')
             return (
                 <div>
                     <ScorePlot
@@ -171,6 +173,25 @@ class ScorePlot extends React.Component {
                                           checked={!track.muted}
                                           onChange={() => this.props.muteTrack(track.id)}
                                       />
+                                  </td>
+                                  <td>
+                                      {track.beats.some(v => v) ?
+                                          <a href="" title="Clear track" onClick={event => {
+                                              event.preventDefault();
+                                              this.props.clearTrack(track.id);
+                                          }}><ClearIcon name="delete"/></a> :
+                                          <ClearIcon className="disabled-icon" name="delete"/>}
+                                  </td>
+                                  <td>
+                                      <div>
+                                          <Slider
+                                              style={{width: "100px"}}
+                                              min={-62}
+                                              defaultValue={1}
+                                              max={12} 
+                                              onChange={value => this.props.setTrackVolume(track.id, parseFloat(value))}
+                                          />
+                                      </div>
                                   </td>
                               </tr>
                           );

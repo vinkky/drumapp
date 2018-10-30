@@ -96,3 +96,7 @@ td .beat {
   height: 38px;
   border: 1px solid black
 }
+
+.disabled-icon {
+  color: lightgrey;
+}
