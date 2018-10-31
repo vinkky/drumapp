@@ -38,7 +38,7 @@ class MusicBox extends React.Component {
         this.state = {
             index: 0,
             tracks: [
-                {id: 1,  name: "kick-808", vol: -60, muted: false, note: "4n", beats: initBeats(16) },
+                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16) },
                 {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
                 {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
                 {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16) },
@@ -88,9 +88,6 @@ class MusicBox extends React.Component {
             return (
                 <div>
                     <ScorePlot
-                        width={this.props.data[0].length}
-                        height={this.props.data.length}
-                        data={this.props.data}
                         index={this.state.currentBeat}
                         tracks={this.state.tracks}
                         toggleTrackBeat={this.toggleTrackBeat}
@@ -160,45 +157,48 @@ class ScorePlot extends React.Component {
                       );
                   })
               }</tbody>
-              <thead>
+              <thead >
                   {
                       this.props.tracks.map((track, i) => {
                           return (
-                              <tr key={i} className="track">
-                                  <th>
-                                      <SampleSelector id={track.id} current={track.name} onChange={this.props.updateTrackSample} />
-                                  </th>
-                                  <td className="mute">
-                                      <Checkbox
-                                          checked={!track.muted}
-                                          onChange={() => this.props.muteTrack(track.id)}
+                              <div key={i} style={{float: "left", height:"200px", width: "80px", bottom: 0, textAlign: "center"}} className="controls">
+                                  <div>
+                                      <Slider
+                                          style={{marginLeft: "33px", height:"100px"}}
+                                          min={-62}
+                                          defaultValue={1}
+                                          max={12} 
+                                          step={3.7}
+                                          vertical={true}
+                                          onChange={value => this.props.setTrackVolume(track.id, parseFloat(value))}
                                       />
-                                  </td>
-                                  <td>
-                                      {track.beats.some(v => v) ?
-                                          <a href="" title="Clear track" onClick={event => {
-                                              event.preventDefault();
-                                              this.props.clearTrack(track.id);
-                                          }}><ClearIcon name="delete"/></a> :
-                                          <ClearIcon className="disabled-icon" name="delete"/>}
-                                  </td>
-                                  <td>
-                                      <div>
-                                          <Slider
-                                              style={{width: "100px"}}
-                                              min={-62}
-                                              defaultValue={1}
-                                              max={12} 
-                                              onChange={value => this.props.setTrackVolume(track.id, parseFloat(value))}
+                                  </div>
+                                  <div>
+                                      <div className="mute">
+                                          <Checkbox
+                                              checked={!track.muted}
+                                              onChange={() => this.props.muteTrack(track.id)}
                                           />
                                       </div>
-                                  </td>
-                              </tr>
+                                      <div>
+                                          {track.beats.some(v => v) ?
+                                              <a href="" title="Clear track" onClick={event => {
+                                                  event.preventDefault();
+                                                  this.props.clearTrack(track.id);
+                                              }}><ClearIcon name="delete"/></a> :
+                                              <ClearIcon className="disabled-icon" name="delete"/>}
+                                      </div>
+                                  </div>
+
+                                  <div>
+                                      <SampleSelector id={track.id} current={track.name} onChange={this.props.updateTrackSample} />
+                                  </div>
+                              </div>
                           );
                       })
                   }
                   <tr>
-                      {[...new Array(this.props.width)].map((_, x) => (
+                      {[...new Array(16)].map((_, x) => (
                           <td key={x} style={{}}>
                               <input
                                   type="checkbox"

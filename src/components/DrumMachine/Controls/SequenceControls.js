@@ -31,14 +31,17 @@ function loopProcessor  (tracks, beatNotifier) {
         tracks.forEach(({name, vol, muted, note, beats}) => {
             if (beats[index]) {
                 try {
+                    var vel = Math.random() * 0.5 + 0.5;
                     keys
                         .get(name)
-                        .start(time, 0, note, 0);
+                        .start(time, 0, note, 0, vel);
                     keys
                         .get(name).volume.value = muted
                             ? -Infinity
                             : vol;
-                } catch(e) {}
+                } catch(e) {
+                    console.log('kakzas vyksta', e)
+                }
             }
         });
     };
