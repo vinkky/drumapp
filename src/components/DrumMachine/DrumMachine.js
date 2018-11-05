@@ -8,8 +8,9 @@ import "./DrumMachine.css";
 import Checkbox from "@material-ui/core/Checkbox";
 import ClearIcon from "@material-ui/icons/DeleteTwoTone";
 import Slider, { Range } from "rc-slider";
-import "rc-slider/assets/index.css";
+import { CircleSlider } from "react-circle-slider";
 
+import "rc-slider/assets/index.css";
 import samples from "../../samples";
 
 const musicData = [
@@ -32,11 +33,11 @@ function audioScene() {
 }
 
 class MusicBox extends React.Component {
-    loop
     constructor(props) {
         super(props);
         this.state = {
             index: 0,
+            bpm: 120,
             tracks: [
                 {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16) },
                 {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
@@ -53,11 +54,16 @@ class MusicBox extends React.Component {
             return new Array(n).fill(false);
         }
         this.loop = loopControls.create(this.state.tracks, this.updateCurrentBeat);
+        loopControls.updateBPM(this.state.bpm);
         
     }
     
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
+        };
+        updateBPM = (newBpm) => {
+            loopControls.updateBPM(newBpm);
+            this.setState({bpm: newBpm});
         };
         updateTracks = (newTracks) => {
             this.loop = loopControls.update(this.loop, newTracks, this.updateCurrentBeat);
@@ -89,12 +95,14 @@ class MusicBox extends React.Component {
                 <div>
                     <ScorePlot
                         index={this.state.currentBeat}
+                        bpm={this.state.bpm}
                         tracks={this.state.tracks}
                         toggleTrackBeat={this.toggleTrackBeat}
                         muteTrack={this.muteTrack}
                         clearTrack={this.clearTrack}
                         setTrackVolume={this.setTrackVolume}
                         updateTrackSample={this.updateTrackSample}
+                        updateBPM={this.updateBPM}
                     />
                     <PlayButton loop={this.loop} />
                 </div>
@@ -209,6 +217,19 @@ class ScorePlot extends React.Component {
                       ))}
                   </tr>
               </thead>
+              <div>
+                  <Slider
+                      style={{marginLeft: "33px", height:"100px"}}
+                      min={30}
+                      defaultValue={120}
+                      max={240} 
+                      vertical={false}
+                      onChange={value => this.props.updateBPM(parseFloat(value))}
+                  />
+                  <CircleSlider value={this.props.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={2} onChange={value => this.props.updateBPM(parseFloat(value))} />
+
+                  <h1>{this.props.bpm}</h1>
+              </div>
           </table>
       );
   }

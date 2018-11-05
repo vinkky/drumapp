@@ -26,8 +26,18 @@ function loopProcessor  (tracks, beatNotifier) {
         fadeOut: "64n"
     }).toMaster();
 
+
     return (time, index) => {
         beatNotifier(index);
+        // for (let y = 0; y < noteNames.length; y++) {
+        //     if (tracks[y].beats[index]) {
+        //         keys.get(noteNames[y]).start(time, 0, tracks[y].note, 0);
+        //         keys
+        //             .get(noteNames[y]).volume.value = tracks[y].muted
+        //                 ? -Infinity
+        //                 :  tracks[y].vol;
+        //     }
+        // }
         tracks.forEach(({name, vol, muted, note, beats}) => {
             if (beats[index]) {
                 try {
@@ -40,7 +50,7 @@ function loopProcessor  (tracks, beatNotifier) {
                             ? -Infinity
                             : vol;
                 } catch(e) {
-                    console.log('kakzas vyksta', e)
+                    console.log("kakzas vyksta", e);
                 }
             }
         });
