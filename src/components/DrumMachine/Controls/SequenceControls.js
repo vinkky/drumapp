@@ -27,6 +27,7 @@ function loopProcessor  (tracks, beatNotifier) {
     }).toMaster();
 
 
+    
     return (time, index) => {
         beatNotifier(index);
         // for (let y = 0; y < noteNames.length; y++) {

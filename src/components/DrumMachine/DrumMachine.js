@@ -48,7 +48,7 @@ class MusicBox extends React.Component {
             currentBeat: -1,
             velocities: [
             // will be some volocity values .05 0.8 etc
-            ]
+            ],
         };
         function initBeats(n) {
             return new Array(n).fill(false);
@@ -218,16 +218,7 @@ class ScorePlot extends React.Component {
                   </tr>
               </thead>
               <div>
-                  <Slider
-                      style={{marginLeft: "33px", height:"100px"}}
-                      min={30}
-                      defaultValue={120}
-                      max={240} 
-                      vertical={false}
-                      onChange={value => this.props.updateBPM(parseFloat(value))}
-                  />
                   <CircleSlider value={this.props.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={2} onChange={value => this.props.updateBPM(parseFloat(value))} />
-
                   <h1>{this.props.bpm}</h1>
               </div>
           </table>
