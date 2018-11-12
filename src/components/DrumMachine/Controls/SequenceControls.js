@@ -18,16 +18,19 @@ export function update(loop, tracks, beatNotifier){
     loop.callback = loopProcessor(tracks, beatNotifier);
     return loop;
 }
+
 function loopProcessor  (tracks, beatNotifier) {
     const urls = tracks.reduce((acc, {name}) => {
         return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
     }, {});
-    const keys = new Tone.Players(urls,       {
+    const keys = new Tone.Players(urls, {
         fadeOut: "64n"
     }).toMaster();
-
-
     
+    function loaded() {
+        console.log("loaded");
+    }
+    keys.callback = loaded();
     return (time, index) => {
         beatNotifier(index);
         // for (let y = 0; y < noteNames.length; y++) {
