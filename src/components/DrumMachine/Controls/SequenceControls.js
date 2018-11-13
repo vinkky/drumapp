@@ -1,13 +1,15 @@
 import Tone from "tone";
 
 export  function create(tracks, beatNotifier){
+    // to prevent buffer from crashing
+    // Tone.context.lookAhead = 0.3;
     const loop = new Tone.Sequence(
         loopProcessor(tracks, beatNotifier),
         [...new Array(16)].map((_, i) => i),
         "16n"
     );
     Tone.Transport.bpm.value = 120;
-    Tone.Transport.start();
+    Tone.Transport.start(+1);
     return loop;
 }
 export function updateBPM(bpm) {
@@ -28,7 +30,6 @@ function loopProcessor  (tracks, beatNotifier) {
     }).toMaster();
     
     function loaded() {
-        console.log("loaded");
     }
     keys.callback = loaded();
     return (time, index) => {
@@ -42,19 +43,20 @@ function loopProcessor  (tracks, beatNotifier) {
         //                 :  tracks[y].vol;
         //     }
         // }
+
         tracks.forEach(({name, vol, muted, note, beats}) => {
             if (beats[index]) {
                 try {
-                    var vel = Math.random() * 0.5 + 0.5;
                     keys
                         .get(name)
-                        .start(time, 0, note, 0, vel);
+                        .start(time, 0, note, 0);
+
                     keys
                         .get(name).volume.value = muted
                             ? -Infinity
                             : vol;
                 } catch(e) {
-                    console.log("kakzas vyksta", e);
+                    return e;
                 }
             }
         });

@@ -1,103 +1,94 @@
+/* Sequence css */
+
 table {
-  background-color: #e6e8e6;
+  margin: 0 auto;
+  text-align: center;
+  background: #747474;
   display: table;
-  border-collapse: separate;
-  border-spacing: 6px;
-  border-color: rgb(74, 74, 145);
   border-spacing:0; /* Removes the cell spacing via CSS */
-  border-collapse: collapse;
-  position: fixed;
     bottom: 50px;
     left: 50px;
-    width: 100%;
+}
+.track {
+  
 }
 table tr {
-  width: 780px;
+  width: 800px;
   display: block;
   margin: 0px;
   padding: 0px;
 }
-table tbody tr td .Valkata {
-  background: rgb(116, 113, 113);
+
+.beat:nth-of-type(-n+16) {
+  background: #283845;   
+}
+.beat:nth-of-type(-n+12) {
+  background: #B8B08D;   
+}
+.beat:nth-of-type(-n+8) {
+  background: #F2D492;   
+}
+.beat:nth-of-type(-n+4) {
+  background: #F29559;   
 }
 
-tbody input[type="checkbox"] {
-  -webkit-appearance: initial;
-  appearance: initial;
-  width: 40px;
-  height: 40px;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-  background: gray;
-  position: relative;
-}
-
-tbody input[type="checkbox"]:checked:after {
-  color: #fff;
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: #f15025;
-  top: 0;
-  left: 0;
-}
-thead input[type="checkbox"]:nth-child(3n + 1) {
-  -webkit-appearance: initial;
-  appearance: initial;
-  width: 40px;
-  height: 15px;
-  border: none;
-  margin: 0px;
-  padding: 0px;
-  background: #f15025;
-  position: relative;
-}
-thead input[type="checkbox"]:checked:after {
-  content: "\2713";
-  color: #fff;
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 100%;
-  background: rgb(45, 45, 109);
-  top: 0;
-  left: 0;
-}
-
-.beat:nth-of-type(1),
-.beat:nth-of-type(5),
-.beat:nth-of-type(9),
-.beat:nth-of-type(13) {
-  background: #cccccc
-}
 .beat {
   text-align: center;
-  line-height: 1em;
-}
-
-.beat.active a {
-  background: #f15025;
-}
-
-.beat.current {
-  background: #f5f5eb;
-}
-
-td .beat {
-  width: 38px;
-  height: 38px;
+  border: 2px solid #747474;
+  border-radius: 6px;
 }
 
 .beat > a {
   display: inline-block;
-  width: 38px;
-  height: 38px;
-  border: 1px solid black
+  width: 44px;
+  height: 45px;
 }
 
 .disabled-icon {
   color: lightgrey;
 }
 
+.circleIndicator {
+  margin-top: 10px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(255, 96, 4);
+  margin: 0 auto;
+}
+.beat:hover {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+
+}
+.currentBeat {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.SequenceNumbers {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.Container {
+  background-color:#747474;
+  height: 650px;
+  margin: 0 auto;
+  width: 1000px;
+}
+
+.CircleKnob {
+  fill: black;
+}
+svg g circle {
+  fill: black;
+}
+
+.rc-slider-handle {
+  border: 2px solid #283845;   
+}
+.rc-slider-track {
+  background-color: #B8B08D
+}
+.rc-slider-vertical .rc-slider-handle  {
+  background-color: #F29559
+}
