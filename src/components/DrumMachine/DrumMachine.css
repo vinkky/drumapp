@@ -6,12 +6,8 @@ table {
   background: #747474;
   display: table;
   border-spacing:0; /* Removes the cell spacing via CSS */
-    bottom: 50px;
-    left: 50px;
 }
-.track {
-  
-}
+
 table tr {
   width: 800px;
   display: block;
@@ -91,4 +87,9 @@ svg g circle {
 }
 .rc-slider-vertical .rc-slider-handle  {
   background-color: #F29559
+}
+
+.TrackComponent {
+  padding-top: 100px;
+  margin-left: 90px;
 }

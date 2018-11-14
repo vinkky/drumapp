@@ -28,7 +28,6 @@ function loopProcessor  (tracks, beatNotifier) {
     const keys = new Tone.Players(urls, {
         fadeOut: "64n"
     }).toMaster();
-    
     function loaded() {
     }
     keys.callback = loaded();
@@ -49,7 +48,7 @@ function loopProcessor  (tracks, beatNotifier) {
                 try {
                     keys
                         .get(name)
-                        .start(time, 0, note, 0);
+                        .start(time, 0, note, );
 
                     keys
                         .get(name).volume.value = muted

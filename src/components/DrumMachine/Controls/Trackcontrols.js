@@ -62,6 +62,38 @@ export function muteTrack(tracks, id) {
     });
 }
 
+export function changeTrackPattern (tracks, id, patternID) {
+    return tracks.map((track) => {
+        if (track.id !== id) {
+            return track;
+        } else {
+            return {...track, beats: track.pattern[patternID]};
+        }
+    });
+}
+export function addTrackPattern (tracks, id, pattern) {
+    return tracks.map((track) => {
+        if (track.id !== id) {
+            return track;
+        } else {
+            return {...track, 
+                patterns: track.patterns.push(pattern)};
+        }
+    });
+}
+export function changeToPatternMode (status) {
+    return  {status: !status};
+}
+export function deleteTrackPattern (tracks, id, patternID) {
+    return tracks.map((track) => {
+        if (track.id !== id) {
+            return track;
+        } else {
+            return {...track, 
+                patterns: track.patterns.splice(patternID, 1)};
+        }
+    });
+}
 export function updateTrackSample(tracks, id, sample) {
     return tracks.map((track) => {
         if (track.id !== id) {

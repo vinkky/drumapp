@@ -11,7 +11,7 @@ class TracksComponent extends React.Component {
 
     render() {
         return (
-            <div >
+            <div  className={"TrackComponent"}>
                 {
                     this.props.tracks.map((track, i) => {
                         return (
@@ -30,6 +30,7 @@ class TracksComponent extends React.Component {
                                 <div>
                                     <div className="mute">
                                         <Checkbox
+                                            style={{color: "#283845"}}
                                             checked={!track.muted}
                                             onChange={() => this.props.muteTrack(track.id)}
                                         />
@@ -49,6 +50,19 @@ class TracksComponent extends React.Component {
                                             backgroundColor: track.beats[this.props.index] == true ? "red" : "black" 
                                         }}
                                     />
+                                </div>
+                                <div>
+                                    {track.patterns.map((pattern, i) => {
+                                        return (
+                                            <button 
+                                                key={i}
+                                                onClick={() => this.props.addTrackPatern(track.id, i)}>
+                                                {i+1}
+                                            </button>
+                                        );
+                                    })
+                                
+                                    }
                                 </div>
                                 <div>
                                     <SampleSelector id={track.id} current={track.name} onChange={this.props.updateTrackSample} />

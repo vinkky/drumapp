@@ -5,8 +5,10 @@ import * as trackControls from "./Controls/Trackcontrols";
 import * as loopControls  from "./Controls/SequenceControls";
 import PlayButton from "./Components/PlayButton";
 import SequenceBar from "./Components/SequenceBar";
+import SynthComponent from "./Components/SynthComponent";
 import TracksComponent from "./Components/TracksComponent";
 import { CircleSlider } from "react-circle-slider";
+
 
 import "rc-slider/assets/index.css";
 import "./DrumMachine.css";
@@ -29,24 +31,51 @@ class MusicBox extends React.Component {
             index: 0,
             bpm: 120,
             tracks: [
-                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16) },
-                {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
-                {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
-                {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16) },
-                {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16) },
+                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16), patterns : initPatterns(4)},
+                {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
+                {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
+                {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16), patterns : initPatterns(4)},
+                {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
             ],
             currentBeat: -1,
-            locked: false
+            locked: false,
+            patternMode: false,
+            pattern: initBeats(16)
 
         };
         function initBeats(n) {
             return new Array(n).fill(false);
         }
+        function initPatterns(n) {
+            return new Array(n).fill([]);
+        }
         this.loop = loopControls.create(this.state.tracks, this.updateCurrentBeat);
         loopControls.updateBPM(this.state.bpm);
         
     }
+
+
+
+        updatePatternMode = () => {
+            this.setState({patternMode: !this.state.patternMode});
+        };
+        togglePaternBeat = (beat) => {
+            const {pattern} = this.state;
+            this.setState({
+                pattern: pattern .map((v, i) => i !== beat ? v : !v)
+            });
+        };
+        addTrackPatern = (id, slotid) => {
     
+            return this.state.tracks.map((track) => {
+                if (track.id !== id) {
+                    return track;
+                } else {
+                    console.log(id, "wooho", slotid);
+                    //console.log(track.pattern.map(function(item, index) { return index == slotid ? this.state.patern : item; }));
+                }
+            });
+        };
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
@@ -94,16 +123,26 @@ class MusicBox extends React.Component {
                         tracks={this.state.tracks}
                         toggleTrackBeat={this.toggleTrackBeat}
                         muteTrack={this.muteTrack}
+                        addTrackPatern={this.addTrackPatern}
                         clearTrack={this.clearTrack}
                         setTrackVolume={this.setTrackVolume}
                         updateTrackSample={this.updateTrackSample}
                         updateBPM={this.updateBPM}/>
                     <SequenceBar
                         index={this.state.currentBeat}
+                        patternMode={this.state.patternMode}
+                        pattern={this.state.pattern}
+                        togglePaternBeat={this.togglePaternBeat}
                         tracks={this.state.tracks}
                         toggleTrackBeat={this.toggleTrackBeat}
                     />
+                    <SynthComponent/>
                     <PlayButton loop={this.loop} />
+                    <button
+                        onClick={this.updatePatternMode} 
+                    >
+                    PT MODE
+                    </button>
                     <CircleSlider 
                         className={"CircleKnob"}
                         circleColor={"#283845"}
