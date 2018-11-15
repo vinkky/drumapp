@@ -47,17 +47,16 @@ class MusicBox extends React.Component {
             return new Array(n).fill(false);
         }
         function initPatterns(n) {
-            return new Array(n).fill([]);
+            return new Array(n).fill(Array(16).fill(false));
         }
         this.loop = loopControls.create(this.state.tracks, this.updateCurrentBeat);
         loopControls.updateBPM(this.state.bpm);
         
     }
-
-
-
+        // Pattern functionality
         updatePatternMode = () => {
             this.setState({patternMode: !this.state.patternMode});
+            console.log(this.state.patternMode)
         };
         togglePaternBeat = (beat) => {
             const {pattern} = this.state;
@@ -66,16 +65,18 @@ class MusicBox extends React.Component {
             });
         };
         addTrackPatern = (id, slotid) => {
-    
-            return this.state.tracks.map((track) => {
-                if (track.id !== id) {
-                    return track;
-                } else {
-                    console.log(id, "wooho", slotid);
-                    //console.log(track.pattern.map(function(item, index) { return index == slotid ? this.state.patern : item; }));
-                }
+            const {tracks, pattern} = this.state;
+            this.setState({
+                tracks: trackControls.addTrackPatern(tracks, id, slotid, pattern)
             });
+            console.log('addTrackPattern', this.state.tracks);
         };
+        changeTrackPattern = (id, patternID) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
+            console.log('changeTrackPattern', this.state.tracks);
+        };
+
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
@@ -124,9 +125,11 @@ class MusicBox extends React.Component {
                         toggleTrackBeat={this.toggleTrackBeat}
                         muteTrack={this.muteTrack}
                         addTrackPatern={this.addTrackPatern}
+                        changeTrackPattern={this.changeTrackPattern}
                         clearTrack={this.clearTrack}
                         setTrackVolume={this.setTrackVolume}
                         updateTrackSample={this.updateTrackSample}
+                        patternMode={this.state.patternMode}
                         updateBPM={this.updateBPM}/>
                     <SequenceBar
                         index={this.state.currentBeat}
@@ -139,6 +142,7 @@ class MusicBox extends React.Component {
                     <SynthComponent/>
                     <PlayButton loop={this.loop} />
                     <button
+                        style={this.state.patternMode ?{backgroundColor: "#283845"} : {backgroundColor: "#B8B08D"}}
                         onClick={this.updatePatternMode} 
                     >
                     PT MODE

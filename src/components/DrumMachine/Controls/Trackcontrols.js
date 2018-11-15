@@ -67,23 +67,22 @@ export function changeTrackPattern (tracks, id, patternID) {
         if (track.id !== id) {
             return track;
         } else {
-            return {...track, beats: track.pattern[patternID]};
+            return {...track, beats: track.patterns[patternID]};
         }
     });
 }
-export function addTrackPattern (tracks, id, pattern) {
+export function addTrackPatern (tracks, id, slotid, pattern) {
     return tracks.map((track) => {
         if (track.id !== id) {
             return track;
         } else {
             return {...track, 
-                patterns: track.patterns.push(pattern)};
+                patterns: track.patterns.map((item, index) => index == slotid ? pattern : item )
+            }; 
         }
     });
 }
-export function changeToPatternMode (status) {
-    return  {status: !status};
-}
+
 export function deleteTrackPattern (tracks, id, patternID) {
     return tracks.map((track) => {
         if (track.id !== id) {

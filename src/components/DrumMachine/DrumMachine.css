@@ -93,3 +93,89 @@ svg g circle {
   padding-top: 100px;
   margin-left: 90px;
 }
+
+/* Pattern css */
+
+.patternButtonFull {
+  background-color: #F29559;
+}
+
+.patternButtonEmpty {
+  background-color: #747474
+}
+.patternButtonOFF {
+  -moz-transition:all 0.5s ease-in-out;
+  -webkit-transition:all 0.5s ease-in-out;
+  -o-transition:all 0.5s ease-in-out;
+  -ms-transition:all 0.5s ease-in-out;
+  transition:all 0.5s ease-in-out;
+  -moz-animation:blink normal 1.5s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation:blink normal 1.5s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation:blink normal 1.5s infinite ease-in-out;
+  /* IE */
+  animation:blink normal 1.5s infinite ease-in-out;
+  /* Opera */
+}
+
+@keyframes blink {
+  0% {
+         background-color: rgba(116,116,116,1)
+  }
+  50% {
+         background-color: rgba(116,116,116,0.5)
+  }
+  100% {
+         background-color: rgba(116,116,116,1)
+  }
+}
+@-webkit-keyframes blink {
+  0% {
+         background-color: rgba(116,116,116,1)
+  }
+  50% {
+         background-color: rgba(116,116,116,0.5)
+  }
+  100% {
+         background-color: rgba(116,116,116,1)
+  }
+}
+.patternButtonON {
+  -moz-transition:all 0.5s ease-in-out;
+  -webkit-transition:all 0.5s ease-in-out;
+  -o-transition:all 0.5s ease-in-out;
+  -ms-transition:all 0.5s ease-in-out;
+  transition:all 0.5s ease-in-out;
+  -moz-animation:blink1 normal 1.5s infinite ease-in-out;
+  /* Firefox */
+  -webkit-animation:blink1 normal 1.5s infinite ease-in-out;
+  /* Webkit */
+  -ms-animation:blink1 normal 1.5s infinite ease-in-out;
+  /* IE */
+  animation:blink1 normal 1.5s infinite ease-in-out;
+  /* Opera */
+}
+
+@keyframes blink1 {
+  0% {
+         background-color: rgba(242,149,89,1)
+  }
+  50% {
+         background-color: rgba(242,149,89,0.5)
+  }
+  100% {
+         background-color: rgba(242,149,89,1)
+  }
+}
+@-webkit-keyframes blink1 {
+  0% {
+         background-color: rgba(242,149,89,1)
+  }
+  50% {
+         background-color: rgba(242,149,89,0.5)
+  }
+  100% {
+         background-color: rgba(242,149,89,1)
+  }
+}

@@ -35,7 +35,7 @@ class SequenceBar extends React.Component {
       return (
           <table>
               <tbody>
-                  {this.props.patternMode ?
+                  {!this.props.patternMode ?
                       this.props.tracks.map((track, i) => {
                           return (
                               <tr key={i} className="track" >
@@ -54,7 +54,6 @@ class SequenceBar extends React.Component {
                                                   }} ><div 
                                                           className={sequenceClass}
                                                       />
-                                                     
                                                   </a>
                                                   <strong className={"SequenceNumbers"}>
                                                       {beat+1}
@@ -81,7 +80,6 @@ class SequenceBar extends React.Component {
                                       }} ><div 
                                               className={sequenceClass}
                                           />
-                                   
                                       </a>
                                       <strong className={"SequenceNumbers"}>
                                           {beat+1}
