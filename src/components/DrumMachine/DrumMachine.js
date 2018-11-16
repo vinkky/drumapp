@@ -56,7 +56,6 @@ class MusicBox extends React.Component {
         // Pattern functionality
         updatePatternMode = () => {
             this.setState({patternMode: !this.state.patternMode});
-            console.log(this.state.patternMode)
         };
         togglePaternBeat = (beat) => {
             const {pattern} = this.state;
@@ -69,12 +68,10 @@ class MusicBox extends React.Component {
             this.setState({
                 tracks: trackControls.addTrackPatern(tracks, id, slotid, pattern)
             });
-            console.log('addTrackPattern', this.state.tracks);
         };
         changeTrackPattern = (id, patternID) => {
             const {tracks} = this.state;
             this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
-            console.log(this.state.tracks);
         };
 
         updateCurrentBeat = (beat) => {
