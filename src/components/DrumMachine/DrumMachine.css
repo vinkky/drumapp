@@ -96,6 +96,12 @@ svg g circle {
 
 /* Pattern css */
 
+.patternButton {
+  color: lightgray;
+  border-radius: 50%;
+  border: none;
+}
+
 .patternButtonFull {
   background-color: #F29559;
 }

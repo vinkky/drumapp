@@ -55,8 +55,8 @@ class TracksComponent extends React.Component {
                                     {track.patterns.map((pattern, i) => {
                                         return (
                                             <button 
-                                                className={this.props.patternMode && pattern.some(v => v) ? "patternButtonFull" : this.props.patternMode && pattern.some(v => !v) ? "patternButtonEmpty" : ""}
-                                                style={pattern.some(v => v)  ? {backgroundColor: "#F29559"} : {backgroundColor: "#747474"}}
+                                                className={"patternButton"}
+                                                style={track.currPattern === i  ? {backgroundColor: "#283845"} : pattern.some(v => v) ? {backgroundColor: "#F29559"} : {backgroundColor: "#747474"}}
                                                 key={i}
                                                 onClick={ () => {
                                                     this.props.patternMode === true ? 

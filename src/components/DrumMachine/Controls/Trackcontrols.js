@@ -67,7 +67,7 @@ export function changeTrackPattern (tracks, id, patternID) {
         if (track.id !== id) {
             return track;
         } else {
-            return {...track, beats: track.patterns[patternID]};
+            return {...track, beats: track.patterns[patternID], currPattern: patternID};
         }
     });
 }

@@ -31,11 +31,11 @@ class MusicBox extends React.Component {
             index: 0,
             bpm: 120,
             tracks: [
-                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16), patterns : initPatterns(4)},
-                {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
-                {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
-                {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16), patterns : initPatterns(4)},
-                {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), patterns : initPatterns(4)},
+                {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: initBeats(16), currPattern: null, patterns : initPatterns(4)},
+                {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), currPattern: null, patterns : initPatterns(4)},
+                {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), currPattern: null, patterns : initPatterns(4)},
+                {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16), currPattern: null, patterns : initPatterns(4)},
+                {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), currPattern: null, patterns : initPatterns(4)},
             ],
             currentBeat: -1,
             locked: false,
@@ -74,7 +74,7 @@ class MusicBox extends React.Component {
         changeTrackPattern = (id, patternID) => {
             const {tracks} = this.state;
             this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
-            console.log('changeTrackPattern', this.state.tracks);
+            console.log(this.state.tracks);
         };
 
         updateCurrentBeat = (beat) => {
