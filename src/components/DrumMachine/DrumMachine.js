@@ -37,10 +37,12 @@ class MusicBox extends React.Component {
                 {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: initBeats(16), currPattern: 0, patterns : initPatterns(4)},
                 {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: initBeats(16), currPattern: 0, patterns : initPatterns(4)},
             ],
+            selectedTrack: 0,
             currentBeat: -1,
             locked: false,
             patternMode: false,
-            pattern: initBeats(16)
+            pattern: initBeats(16),
+            notes: ["2n", "4n", "8n", "16n"]
 
         };
         function initBeats(n) {
@@ -73,7 +75,7 @@ class MusicBox extends React.Component {
             const {tracks} = this.state;
             this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
         };
-
+        // Sequence functionality
         updateCurrentBeat = (beat) => {
             this.setState({currentBeat: beat});
         };
@@ -88,6 +90,16 @@ class MusicBox extends React.Component {
         toggleTrackBeat = (id, beat) => {
             const {tracks} = this.state;
             this.updateTracks(trackControls.toggleTrackBeat(tracks, id, beat));
+        };
+        addTrack = () => {
+            const {tracks} = this.state;
+            if(tracks.length <= 8) {
+                this.updateTracks(trackControls.addTrack(tracks));
+            }
+        };
+        deleteTrack = (id) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.deleteTracks(tracks, id));
         };
         muteTrack = (id) => {
             const {tracks} = this.state;
@@ -108,27 +120,42 @@ class MusicBox extends React.Component {
             const {tracks} = this.state;
             this.updateTracks(trackControls.updateTrackSample(tracks, id, sample));
         };
+        updateTrackNote = (id, note) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.updateTrackNote(tracks, id, note));
+        };
         clearTrack = (id) => {
             const {tracks} = this.state;
             this.updateTracks(trackControls.clearTrack(tracks, id));
         };
-
+        updateTrackSample = (id, sample) => {
+            const {tracks} = this.state;
+            this.updateTracks(trackControls.updateTrackSample(tracks, id, sample));
+        };
+        selectTrack = (id) => {
+            this.setState({selectedTrack: id});
+        };
         render() {
             return (
                 <div className={"Container"}>
                     <TracksComponent
                         index={this.state.currentBeat}
                         tracks={this.state.tracks}
+                        notes={this.state.notes}
                         toggleTrackBeat={this.toggleTrackBeat}
+                        deleteTrack={this.deleteTrack}
                         muteTrack={this.muteTrack}
                         addTrackPatern={this.addTrackPatern}
                         changeTrackPattern={this.changeTrackPattern}
                         clearTrack={this.clearTrack}
                         setTrackVolume={this.setTrackVolume}
                         updateTrackSample={this.updateTrackSample}
+                        updateTrackNote={this.updateTrackNote}
                         patternMode={this.state.patternMode}
-                        updateBPM={this.updateBPM}/>
+                        selectedTrack={this.state.selectedTrack}
+                        selectTrack={this.selectTrack}/>
                     <SequenceBar
+                        selectedTrack={this.state.selectedTrack}
                         index={this.state.currentBeat}
                         patternMode={this.state.patternMode}
                         pattern={this.state.pattern}
@@ -137,19 +164,26 @@ class MusicBox extends React.Component {
                         toggleTrackBeat={this.toggleTrackBeat}
                     />
                     <SynthComponent/>
-                    <PlayButton loop={this.loop} />
+                    <PlayButton 
+                        loop={this.loop} />
                     <button
                         style={this.state.patternMode ?{backgroundColor: "#283845"} : {backgroundColor: "#B8B08D"}}
                         onClick={this.updatePatternMode} 
                     >
                     PT MODE
                     </button>
+                    <button
+                        onClick={this.addTrack} 
+                    >
+                        Add sound
+                    </button>
                     <CircleSlider 
                         className={"CircleKnob"}
                         circleColor={"#283845"}
                         progressColor={"#B8B08D"}
                         knobColor={"#B8B08D"}
-                        value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} onChange={value => this.updateBPM(parseFloat(value))} />
+                        value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} 
+                        onChange={value => this.updateBPM(parseFloat(value))} />
                     <h1>{this.state.bpm}</h1>
                     
                 </div>

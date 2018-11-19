@@ -2,7 +2,8 @@ import React from "react";
 
 class SampleSelector extends React.Component {
   state = {
-      open: false
+      open: false,
+      notes: ["2n", "4n", "8n", "16n"]
   };
   constructor(props) {
       super(props);
@@ -25,14 +26,14 @@ class SampleSelector extends React.Component {
   };
 
   render() {
-      const {current, source} = this.props;
+      const {current} = this.props;
       const {open} = this.state;
       if (open) {
           return (
               <select 
                   className="SelectList"    
                   style={{backgroundColor: "#747474"}}autoFocus value={current} onChange={this.onChange} onBlur={this.close}>{
-                      source.map((sample, i) => {
+                      this.state.notes.map((sample, i) => {
                           return <option key={i}>{sample}</option>;
                       })
                   }</select>

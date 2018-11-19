@@ -8,6 +8,7 @@ export  function create(tracks, beatNotifier){
         [...new Array(16)].map((_, i) => i),
         "16n"
     );
+    
     Tone.Transport.bpm.value = 120;
     Tone.Transport.start(+1);
     return loop;
@@ -22,12 +23,14 @@ export function update(loop, tracks, beatNotifier){
 }
 
 function loopProcessor  (tracks, beatNotifier) {
+    //create a level meter
+    let meter = new Tone.Meter();
     const urls = tracks.reduce((acc, {name}) => {
         return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
     }, {});
     const keys = new Tone.Players(urls, {
         fadeOut: "64n"
-    }).toMaster();
+    }).connect(meter).toMaster();
     function loaded() {
     }
     keys.callback = loaded();
@@ -54,6 +57,7 @@ function loopProcessor  (tracks, beatNotifier) {
                         .get(name).volume.value = muted
                             ? -Infinity
                             : vol;
+
                 } catch(e) {
                     return e;
                 }

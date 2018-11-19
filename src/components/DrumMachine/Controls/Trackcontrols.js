@@ -1,7 +1,9 @@
 export function initBeats(n){
     return new Array(n).fill(false);
 }
-
+export function initPatterns(n) {
+    return new Array(n).fill(Array(16).fill(false));
+}
 export function addTrack(tracks) {
     const id = Math.max.apply(null, tracks.map(t => t.id)) + 1;
     return [
@@ -10,7 +12,10 @@ export function addTrack(tracks) {
             name: "kick-electro01",
             volume: .8,
             muted: false,
+            note: "16n",
             beats: initBeats(16),
+            currPattern: 0,
+            patterns : initPatterns(4),
         }
     ];
 }
@@ -58,6 +63,15 @@ export function muteTrack(tracks, id) {
             return track;
         } else {
             return {...track, muted: !track.muted};
+        }
+    });
+}
+export function updateTrackNote(tracks, id, note) {
+    return tracks.map((track) => {
+        if (track.id !== id) {
+            return track;
+        } else {
+            return {...track, note: note};
         }
     });
 }

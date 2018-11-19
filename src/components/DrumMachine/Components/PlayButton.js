@@ -17,7 +17,9 @@ class PlayButton extends React.Component {
 
   render() {
       return (
-          <button style={{width: "50px", height: "50px", borderRadius: "4px", backgroundColor: "#F29559", border: "none"}} type="button" onClick={this.onClick}>
+          <button
+              className={"PlayButton"}
+              onClick={this.onClick}>
               {this.state.isPlaying ? "Stop" : "Play"}
           </button>
       );
