@@ -54,11 +54,11 @@ render() {
             {
                 this.props.tracks.map((track, i) => {
                     return (
-                        <div key={i} style={{float: "left", height:"200px", width: "80px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}} className="controls">
+                        <div key={i} style={{backgroundColor: "#b9b9b9", float: "left", height:"200px", width: "80px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}} className="controls">
                             <div
                                 style={{width: "10px", 
                                     height: "10px", 
-                                    borderRadius: "50%" ,
+                                    borderRadius: "50%",
                                     backgroundColor: i == this.props.selectedTrack ? "red" : "black" 
                                 }}
                             />
@@ -96,6 +96,7 @@ render() {
                                         }}><ClearIcon name="delete"/></a> :
                                         <ClearIcon className="disabled-icon" name="delete"/>}
                                     <DeleteIcon 
+                                        style={{cursor: "pointer"}}
                                         onClick={() => {this.props.deleteTrack(track.id);}}
                                         className="disabled-icon"/>
                                 </div>
@@ -129,7 +130,7 @@ render() {
                                 }
                             </div>
                             <div>
-                                <Selector id={track.id} source={samples} current={track.name} onChange={this.props.updateTrackSample} />
+                                <Selector id={track.id} source={samples} current={track.name} onChange={this.props.updateTrackSample} /><div/>
                                 <Selector id={track.id} source={this.props.notes} current={track.note} onChange={this.props.updateTrackNote} />
                             </div>
                         </div>

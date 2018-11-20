@@ -25,7 +25,9 @@ export function clearTrack(tracks, id) {
         if (track.id !== id) {
             return track;
         } else {
-            return {...track, beats: initBeats(16)};
+            return {...track, beats: initBeats(16), 
+                patterns: track.patterns.map((v, i) => i == track.currPattern ? initBeats(16) : v ) 
+            };
         }
     });
 }
@@ -41,7 +43,8 @@ export function toggleTrackBeat(tracks, id, beat) {
         } else {
             return {
                 ...track,
-                beats: track.beats.map((v, i) => i !== beat ? v : !v)
+                beats: track.beats.map((v, i) => i !== beat ? v : !v), 
+                patterns: track.patterns.map((v, i) => i == track.currPattern ? v.map((v, i) => i !== beat ? v : !v) : v), 
             };
         }
     });

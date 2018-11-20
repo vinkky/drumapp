@@ -23,14 +23,13 @@ export function update(loop, tracks, beatNotifier){
 }
 
 function loopProcessor  (tracks, beatNotifier) {
-    //create a level meter
-    let meter = new Tone.Meter();
+    var dist = new Tone.Distortion(0).toMaster();
     const urls = tracks.reduce((acc, {name}) => {
         return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[wav|wav]`};
     }, {});
     const keys = new Tone.Players(urls, {
         fadeOut: "64n"
-    }).connect(meter).toMaster();
+    }).connect(dist, Tone.Master);
     function loaded() {
     }
     keys.callback = loaded();
@@ -57,7 +56,6 @@ function loopProcessor  (tracks, beatNotifier) {
                         .get(name).volume.value = muted
                             ? -Infinity
                             : vol;
-
                 } catch(e) {
                     return e;
                 }

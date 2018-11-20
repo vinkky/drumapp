@@ -185,7 +185,6 @@ class MusicBox extends React.Component {
                         value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} 
                         onChange={value => this.updateBPM(parseFloat(value))} />
                     <h1>{this.state.bpm}</h1>
-                    
                 </div>
             );
         }
