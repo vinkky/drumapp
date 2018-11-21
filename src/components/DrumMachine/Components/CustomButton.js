@@ -9,9 +9,9 @@ class PlayButton extends React.Component {
       const isPlaying = !this.state.isPlaying;
       this.setState({ isPlaying });
       if (isPlaying) {
-          this.props.loop.start();
+          this.props.source.start();
       } else {
-          this.props.loop.stop();
+          this.props.source.stop();
       }
   };
 
@@ -20,7 +20,7 @@ class PlayButton extends React.Component {
           <button
               className={"PlayButton"}
               onClick={this.onClick}>
-              {this.state.isPlaying ? "Stop" : "Play"}
+              {this.state.isPlaying ? this.props.unclick : this.props.click}
           </button>
       );
   }

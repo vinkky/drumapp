@@ -50,10 +50,8 @@ function loopProcessor  (tracks, beatNotifier) {
                 try {
                     keys
                         .get(name)
-                        .start(time, 0, note, );
-
-                    keys
-                        .get(name).volume.value = muted
+                        .start(time, 0, note, )
+                        .volume.value = muted
                             ? -Infinity
                             : vol;
                 } catch(e) {
