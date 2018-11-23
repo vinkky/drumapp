@@ -3,14 +3,14 @@ import React from "react";
 
 class SynthComponent extends React.Component {
   
-    render() {
+  render() {
       
-        return (
-            <div className="content">
+    return (
+      <div className="content">
         
-            </div>
-        );
-    }
+      </div>
+    );
+  }
 }
 
 export default SynthComponent;
