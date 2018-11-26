@@ -1,6 +1,6 @@
 import Tone from "tone";
 
-export  function create(tracks, beatNotifier){
+export function create(tracks, beatNotifier){
   // to prevent buffer from crashing
   // Tone.context.lookAhead = 0.3;
   const loop = new Tone.Sequence(
@@ -29,9 +29,6 @@ function loopProcessor  (tracks, beatNotifier) {
   const keys = new Tone.Players(urls, {
     fadeOut: "64n"
   }).toMaster();
-  function loaded() {
-  }
-  keys.callback = loaded();
   return (time, index) => {
     beatNotifier(index);
     // for (let y = 0; y < noteNames.length; y++) {

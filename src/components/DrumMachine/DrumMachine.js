@@ -9,6 +9,7 @@ import SequenceBar from "./Components/SequenceBar";
 import SynthComponent from "./Components/SynthComponent";
 import TracksComponent from "./Components/TracksComponent";
 import BassComponent from "./Components/BassComponent";
+import OneShotComponent from "./Components/OneshotComponent";
 import NoiseComponent from "./Components/NoiseComponent";
 import { CircleSlider } from "react-circle-slider";
 import Slider, { Range } from "rc-slider";
@@ -189,6 +190,7 @@ class MusicBox extends React.Component {
               <button onClick={this.addTrack}>
                       Add sound
               </button>
+              <OneShotComponent/>
               <CircleSlider 
                 className={"CircleKnob"}
                 circleColor={"#283845"}
