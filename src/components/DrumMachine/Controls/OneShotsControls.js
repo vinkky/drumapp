@@ -3,6 +3,7 @@ export function changeKeycode(oneShots, id, keyCode) {
     if (oneShot.id !== id) {
       return oneShot;
     } else {
+      console.log("veikia?");
       return {...oneShot, keyCode: keyCode};
     }
   });
