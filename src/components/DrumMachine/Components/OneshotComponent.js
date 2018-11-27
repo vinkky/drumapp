@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React  from "react";
+import Tone from "tone";
 import * as OneShotsControls from "../Controls/OneShotsControls";
 import Samples from "../../../samples.json";
 import Selector from "./SampleSelector";
@@ -23,6 +24,16 @@ class OneshotComponent extends React.Component {
       var caps = event.getModifierState && event.getModifierState( "CapsLock" );
       this.setState({caps: caps});
     });
+  }
+
+  setup = () => {
+    const urls = this.state.oneShots.reduce((acc, {name}) => {
+      return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[mp3|mp3]`};
+    }, {});
+    const oneshots = new Tone.Players(urls, {
+      fadeOut: "64n"
+    }).toMaster();
+    return oneshots;
   }
 
   updateSamples = (newOneShots) => {

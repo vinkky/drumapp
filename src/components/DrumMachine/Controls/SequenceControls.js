@@ -10,7 +10,8 @@ export function create(tracks, beatNotifier){
   );
     
   Tone.Transport.bpm.value = 120;
-  Tone.Transport.start(+1);
+  //should prevent from buffer crashing maybe
+  Tone.Transport.start("+0.1");
   return loop;
 }
 export function updateBPM(bpm) {
@@ -46,7 +47,7 @@ function loopProcessor  (tracks, beatNotifier) {
         try {
           keys
             .get(name)
-            .start(time, 0, note, )
+            .start(time+0.1, 0, note, )
             .volume.value = muted
               ? -Infinity
               : vol;
