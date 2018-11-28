@@ -25,7 +25,7 @@ export function update(loop, tracks, beatNotifier){
 
 function loopProcessor  (tracks, beatNotifier) {
   const urls = tracks.reduce((acc, {name}) => {
-    return {...acc, [name]: `http://localhost:3000/src/sounds/${name}.[mp3|mp3]`};
+    return {...acc, [name]: `http://localhost:3000/src/sounds/drums/${name}.[mp3|mp3]`};
   }, {});
   const keys = new Tone.Players(urls, {
     fadeOut: "64n"
@@ -47,7 +47,7 @@ function loopProcessor  (tracks, beatNotifier) {
         try {
           keys
             .get(name)
-            .start(time+0.1, 0, note, )
+            .start(time, 0, note, ) //if buffer lags time+0.1
             .volume.value = muted
               ? -Infinity
               : vol;

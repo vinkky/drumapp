@@ -51,7 +51,8 @@ class MusicBox extends React.Component {
       patternMode: false,
       pattern: trackControls.initBeats(16),
       notes: ["2n", "4n", "8n", "16n"],
-      masterVolume: 0
+      masterVolume: 0,
+      currentBar: 0
     };
 
     // Init sequence
@@ -104,6 +105,10 @@ class MusicBox extends React.Component {
         // Sequence functionality
         updateCurrentBeat = (beat) => {
           this.setState({currentBeat: beat});
+          if(this.state.currentBeat == 0){
+            this.setState({currentBar: this.state.currentBar+1});
+            console.log(this.state.currentBar);
+          }
         };
         updateBPM = (newBpm) => {
           loopControls.updateBPM(newBpm);
@@ -190,7 +195,6 @@ class MusicBox extends React.Component {
               <button onClick={this.addTrack}>
                       Add sound
               </button>
-              <OneShotComponent/>
               <CircleSlider 
                 className={"CircleKnob"}
                 circleColor={"#283845"}
@@ -199,6 +203,7 @@ class MusicBox extends React.Component {
                 value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} 
                 onChange={value => this.updateBPM(parseFloat(value))} />
               <h1>{this.state.bpm}</h1>
+              <OneShotComponent/>
               <TracksComponent
                 index={this.state.currentBeat}
                 tracks={this.state.tracks}
@@ -225,8 +230,7 @@ class MusicBox extends React.Component {
                 toggleTrackBeat={this.toggleTrackBeat}
               />
               <NoiseComponent/>
-              <BassComponent/>
-              <SynthComponent/>
+              {/* BassComponent/!*/}
               <div className="AudioPlayer">
                 <audio ref={this.audio} controls controlsList="nodownload" autostart="0"></audio>
               </div>

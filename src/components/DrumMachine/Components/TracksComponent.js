@@ -6,7 +6,7 @@ import VolumeOffIcon from "@material-ui/icons/volumeoff";
 import VolumeOnIcon from "@material-ui/icons/volumeup";
 import ClearIcon from "@material-ui/icons/clear";
 import Selector from "./SampleSelector";
-import samples from "../../../samples.json";
+import samples from "../../../sounds/drums.json";
 import "rc-slider/assets/index.css";
 
 class TracksComponent extends React.Component {

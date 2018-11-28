@@ -1,3 +1,28 @@
+import Tone from "tone";
+
+export function create(oneShots){
+  const oneShotPlayer = new Tone.Players(
+    playerMaker(oneShots),
+    {
+      fadeOut: "64n"
+    }
+  ).toMaster();
+
+  return oneShotPlayer;
+}
+export function update(oneShotPlayer, oneShots){
+  oneShotPlayer = create(oneShots);
+  return oneShotPlayer;
+}
+
+function playerMaker  (oneShots) {
+  const urls = oneShots.reduce((acc, {name}) => {
+    return {...acc, [name]: `http://localhost:3000/src/sounds/shots/${name}.[mp3|mp3]`};
+  }, {});
+  return urls;
+}
+
+
 export function changeKeycode(oneShots, id, keyCode) {
   return oneShots.map((oneShot) => {
     if (oneShot.id !== id) {
@@ -14,6 +39,26 @@ export function switchKeyEdit(oneShots, id, bool) {
       return oneShot;
     } else {
       return {...oneShot, keyEdit: bool};
+    }
+  });
+}
+
+export function updateShotName(oneShots, id, sample) {
+  return oneShots.map((oneShot) => {
+    if (oneShot.id !== id) {
+      return oneShot;
+    } else {
+      return {...oneShot, name: sample};
+    }
+  });
+}
+
+export function changeVolume(oneShots, id, vol) {
+  return oneShots.map((oneShot) => {
+    if (oneShot.id !== id) {
+      return oneShot;
+    } else {
+      return {...oneShot, vol};
     }
   });
 }
