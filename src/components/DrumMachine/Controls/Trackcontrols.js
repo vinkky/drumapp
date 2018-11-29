@@ -1,6 +1,9 @@
 export function initBeats(n){
   return new Array(n).fill(false);
 }
+export function initSwitches(n){
+  return new Array(n).fill(0);
+}
 export function initPatterns(n) {
   return new Array(n).fill(Array(16).fill(false));
 }
@@ -88,6 +91,7 @@ export function changeTrackPattern (tracks, id, patternID) {
     }
   });
 }
+
 export function addTrackPatern (tracks, id, slotid, pattern) {
   return tracks.map((track) => {
     if (track.id !== id) {
@@ -110,6 +114,45 @@ export function deleteTrackPattern (tracks, id, patternID) {
     }
   });
 }
+
+
+export function toggleSwitchPattern (tracks, id, switchID) {
+  return tracks.map((track) => {
+    if (track.id !== id) {
+      return track;
+    } else {
+      return {...track, 
+        switchPatterns: track.switchPatterns.map((v, i) => i == switchID ? (v+ 1) % 4 : v),
+      };
+    }
+  });
+}
+
+export function switchPatternMode (tracks, id) {
+  return tracks.map((track) => {
+    if (track.id !== id) {
+      return track;
+    } else {
+      return {...track, 
+        switchMode: !track.switchMode
+      };
+    }
+  });
+}
+
+export function addSwitchPattern (tracks, id, switchID) {
+  return tracks.map((track) => {
+    if (track.id !== id) {
+      return track;
+    } else {
+      return {...track, 
+        switchArr: track.switchArr.concat(switchID)
+        //sort((a, b) => a - b)
+      };
+    }
+  });
+}
+
 export function updateTrackSample(tracks, id, sample) {
   return tracks.map((track) => {
     if (track.id !== id) {

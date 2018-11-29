@@ -112,6 +112,23 @@ svg g circle {
   border-radius: 50%;
   border: none;
 }
+.patternSelectBtn {
+  text-align: center;
+  font-size: 0.7em;
+  color: lightgray;
+  border: none;
+  width: 7px;
+  background-color: #747474;
+}
+
+
+.Switches button:nth-of-type(1) {
+ background: #283845;
+}
+.Switches button:nth-of-type(5) {
+ background: #283845;
+}
+
 
 .patternButtonFull {
   background-color: #F29559;

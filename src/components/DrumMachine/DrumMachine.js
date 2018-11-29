@@ -39,13 +39,13 @@ class MusicBox extends React.Component {
       index: 0,
       bpm: 120,
       tracks: [
-        {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4)},
-        {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4)},
-        {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4)},
-        {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4)},
-        {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4)},
+        {id: 1,  name: "kick-808", vol: 1, muted: false, note: "4n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4), switchMode: false, switchPatterns:trackControls.initSwitches(8)},
+        {id: 2,  name: "clap-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4), switchMode: false, switchPatterns:trackControls.initSwitches(8)},
+        {id: 3,  name: "snare-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4), switchMode: false, switchPatterns:trackControls.initSwitches(8)},
+        {id: 4,  name: "hihat-808", vol: 1, muted: false, note: "16n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4), switchMode: false, switchPatterns:trackControls.initSwitches(8)},
+        {id: 5,  name: "tom-808", vol: 1, muted: false, note: "8n", beats: trackControls.initBeats(16), currPattern: 0, patterns : trackControls.initPatterns(4), switchMode: false, switchPatterns:trackControls.initSwitches(8)},
       ],
-      selectedTrack: 0,
+      selectedTrack: 0, 
       currentBeat: -1,
       locked: false,
       patternMode: false,
@@ -53,6 +53,7 @@ class MusicBox extends React.Component {
       notes: ["2n", "4n", "8n", "16n"],
       masterVolume: 0,
       currentBar: 0
+      //switch indexa gal daryti globalu ir pagal currentbara taikyti 
     };
 
     // Init sequence
@@ -102,14 +103,43 @@ class MusicBox extends React.Component {
           const {tracks} = this.state;
           this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
         };
+
+        toggleSwitchPattern = (id, i) => {
+          const {tracks} = this.state;
+          this.setState({tracks: trackControls.toggleSwitchPattern(tracks, id, i)});
+          console.log("toggle switch", this.state.tracks);
+        }
+
+        switchPatternMode = (id) => {
+          const {tracks} = this.state;
+          this.setState({tracks: trackControls.switchPatternMode(tracks, id)});
+          console.log(this.state.tracks);
+        }
+
+        switchTrackPattern = () => {
+          const {tracks, currentBar} = this.state;
+          tracks.forEach(({id, switchMode, switchPatterns }) => {
+            let patternID = switchPatterns[currentBar];
+            console.log("pattern id", patternID);
+            if (switchMode) {
+              this.changeTrackPattern(id, patternID);
+            }
+          });
+        }
+
         // Sequence functionality
         updateCurrentBeat = (beat) => {
           this.setState({currentBeat: beat});
-          if(this.state.currentBeat == 0){
-            this.setState({currentBar: this.state.currentBar+1});
+          if(this.state.currentBeat % 16 == 0){
+            this.setState({currentBar: (this.state.currentBar + 1) % 8});
+            this.switchTrackPattern();
             console.log(this.state.currentBar);
           }
+          if(this.state.currentBar == 8){
+            this.setState({currentBar: 0});
+          }
         };
+
         updateBPM = (newBpm) => {
           loopControls.updateBPM(newBpm);
           this.setState({bpm: newBpm});
@@ -166,6 +196,7 @@ class MusicBox extends React.Component {
         selectTrack = (id) => {
           this.setState({selectedTrack: id});
         };
+
         render() {
           return (
             <div className={"Container"}>
@@ -206,6 +237,7 @@ class MusicBox extends React.Component {
               <OneShotComponent/>
               <TracksComponent
                 index={this.state.currentBeat}
+                currentBar={this.state.currentBar}
                 tracks={this.state.tracks}
                 notes={this.state.notes}
                 toggleTrackBeat={this.toggleTrackBeat}
@@ -217,9 +249,12 @@ class MusicBox extends React.Component {
                 setTrackVolume={this.setTrackVolume}
                 updateTrackSample={this.updateTrackSample}
                 updateTrackNote={this.updateTrackNote}
+                toggleSwitchPattern={this.toggleSwitchPattern}
+                switchPatternMode={this.switchPatternMode}
                 patternMode={this.state.patternMode}
                 selectedTrack={this.state.selectedTrack}
                 selectTrack={this.selectTrack}/>
+                
               <SequenceBar
                 selectedTrack={this.state.selectedTrack}
                 index={this.state.currentBeat}

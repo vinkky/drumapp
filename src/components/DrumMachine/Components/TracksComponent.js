@@ -5,6 +5,7 @@ import DeleteIcon from "@material-ui/icons/DeleteTwoTone";
 import VolumeOffIcon from "@material-ui/icons/volumeoff";
 import VolumeOnIcon from "@material-ui/icons/volumeup";
 import ClearIcon from "@material-ui/icons/clear";
+import PatternIcon from "@material-ui/icons/repeat";
 import Selector from "./SampleSelector";
 import samples from "../../../sounds/drums.json";
 import "rc-slider/assets/index.css";
@@ -54,7 +55,7 @@ render() {
       {
         this.props.tracks.map((track, i) => {
           return (
-            <div key={i} style={{backgroundColor: "#b9b9b9", float: "left", height:"200px", width: "80px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}} className="controls">
+            <div key={i} style={{backgroundColor: "#b9b9b9", float: "left", height:"200px", width: "96px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}} className="controls">
               <div
                 style={{width: "10px", 
                   height: "10px", 
@@ -98,6 +99,11 @@ render() {
                     style={{cursor: "pointer"}}
                     onClick={() => {this.props.deleteTrack(track.id);}}
                     className="disabled-icon"/>
+                  <PatternIcon
+                    style={{cursor: "pointer"}}
+                    onClick={() => {this.props.switchPatternMode(track.id);}}
+                    className={track.switchMode ?  null : "disabled-icon"}
+                  />
                 </div>
               </div>
               <div
@@ -108,6 +114,23 @@ render() {
                   backgroundColor: track.beats[this.props.index] == true ? "red" : "black" 
                 }}
               />
+              <div class="Switches">
+                {track.switchPatterns.map((pattern, i) => {
+                  return (
+                    <button 
+                      style={i == this.props.currentBar ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
+                      className="patternSelectBtn"
+                      key={i}
+                      onClick={ () => {
+                        this.props.toggleSwitchPattern(track.id, i);
+                      }}
+                    >
+                      {pattern + 1}
+                    </button>
+                  );
+                })
+                }
+              </div>
               <div>
                 {track.patterns.map((pattern, i) => {
                   return (
