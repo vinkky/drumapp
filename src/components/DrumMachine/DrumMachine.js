@@ -52,8 +52,10 @@ class MusicBox extends React.Component {
       pattern: trackControls.initBeats(16),
       notes: ["2n", "4n", "8n", "16n"],
       masterVolume: 0,
-      currentBar: 0
-      //switch indexa gal daryti globalu ir pagal currentbara taikyti 
+      currentBar: 0,
+      switchLengths: [16, 32],
+      selectedLength: 0,
+      i: 0
     };
 
     // Init sequence
@@ -79,10 +81,6 @@ class MusicBox extends React.Component {
     };
   }
 
-        changeMasterVolume = (volume) => {
-          Tone.Master.volume.value = volume;
-          return this.setState({masterVolume : volume});
-        }
         // Pattern functionality
         updatePatternMode = () => {
           this.setState({patternMode: !this.state.patternMode});
@@ -103,43 +101,47 @@ class MusicBox extends React.Component {
           const {tracks} = this.state;
           this.updateTracks(trackControls.changeTrackPattern(tracks, id, patternID));
         };
-
         toggleSwitchPattern = (id, i) => {
           const {tracks} = this.state;
           this.setState({tracks: trackControls.toggleSwitchPattern(tracks, id, i)});
           console.log("toggle switch", this.state.tracks);
         }
-
         switchPatternMode = (id) => {
           const {tracks} = this.state;
           this.setState({tracks: trackControls.switchPatternMode(tracks, id)});
           console.log(this.state.tracks);
         }
-
         switchTrackPattern = () => {
           const {tracks, currentBar} = this.state;
           tracks.forEach(({id, switchMode, switchPatterns }) => {
             let patternID = switchPatterns[currentBar];
-            console.log("pattern id", patternID);
-            if (switchMode) {
+            let index = (currentBar - 1 + 8) % 8;
+            if (switchMode && switchPatterns[index]!==switchPatterns[currentBar]) {
               this.changeTrackPattern(id, patternID);
+              console.log("ivyko");
             }
           });
         }
-
+        changeSwitchLength = (id) => {
+          this.setState({selectedLength: id});
+        }
         // Sequence functionality
         updateCurrentBeat = (beat) => {
+          const {i, currentBar, currentBeat, switchLengths, selectedLength} = this.state;
           this.setState({currentBeat: beat});
-          if(this.state.currentBeat % 16 == 0){
-            this.setState({currentBar: (this.state.currentBar + 1) % 8});
+          if(currentBeat % 16 == 0){
+            this.setState({currentBar: (currentBar + 1) % 8});
             this.switchTrackPattern();
-            console.log(this.state.currentBar);
+            console.log(currentBar);
           }
-          if(this.state.currentBar == 8){
-            this.setState({currentBar: 0});
-          }
+          // if(this.state.currentBar == 8){
+          //   this.setState({currentBar: 0});
+          // }
         };
-
+        changeMasterVolume = (volume) => {
+          Tone.Master.volume.value = volume;
+          return this.setState({masterVolume : volume});
+        }
         updateBPM = (newBpm) => {
           loopControls.updateBPM(newBpm);
           this.setState({bpm: newBpm});
@@ -223,6 +225,18 @@ class MusicBox extends React.Component {
               >
                     PT MODE
               </button>
+              {this.state.switchLengths.map((item, i) => {
+                return (
+                  <button 
+                    style={i == this.state.selectedLength ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
+                    key={i}
+                    onClick={() => this.changeSwitchLength(i)}
+                  >
+                    {item}
+                  </button>
+                );
+              })
+              }
               <button onClick={this.addTrack}>
                       Add sound
               </button>
@@ -265,7 +279,6 @@ class MusicBox extends React.Component {
                 toggleTrackBeat={this.toggleTrackBeat}
               />
               <NoiseComponent/>
-              {/* BassComponent/!*/}
               <div className="AudioPlayer">
                 <audio ref={this.audio} controls controlsList="nodownload" autostart="0"></audio>
               </div>

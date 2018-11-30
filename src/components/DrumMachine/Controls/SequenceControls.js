@@ -2,7 +2,7 @@ import Tone from "tone";
 
 export function create(tracks, beatNotifier){
   // to prevent buffer from crashing
-  // Tone.context.lookAhead = 0.3;
+  Tone.context.lookAhead = 0.1;
   const loop = new Tone.Sequence(
     loopProcessor(tracks, beatNotifier),
     [...new Array(16)].map((_, i) => i),
@@ -47,7 +47,7 @@ function loopProcessor  (tracks, beatNotifier) {
         try {
           keys
             .get(name)
-            .start(time, 0, note, ) //if buffer lags time+0.1
+            .start(time+0.24, 0, note, ) //if buffer lags time+0.1
             .volume.value = muted
               ? -Infinity
               : vol;

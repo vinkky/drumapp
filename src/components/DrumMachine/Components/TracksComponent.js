@@ -118,7 +118,7 @@ render() {
                 {track.switchPatterns.map((pattern, i) => {
                   return (
                     <button 
-                      style={i == this.props.currentBar ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
+                      style={!track.switchMode ?{backgroundColor: "#A5A5A5"} : i == this.props.currentBar ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
                       className="patternSelectBtn"
                       key={i}
                       onClick={ () => {
@@ -139,7 +139,7 @@ render() {
                       style={track.currPattern === i  ? {backgroundColor: "#283845"} : pattern.some(v => v) ? {backgroundColor: "#F29559"} : {backgroundColor: "#747474"}}
                       key={i}
                       onClick={ () => {
-                        this.props.patternMode === true ? 
+                        this.props.patternMode === true  ? 
                           this.props.addTrackPatern(track.id, i)
                           : 
                           this.props.changeTrackPattern(track.id, i);

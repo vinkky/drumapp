@@ -18,7 +18,9 @@ export function addTrack(tracks) {
       note: "16n",
       beats: initBeats(16),
       currPattern: 0,
-      patterns : initPatterns(4),
+      patterns: initPatterns(4),
+      switchMoode: false,
+      switchPatterns: initSwitches(8)
     }
   ];
 }
@@ -122,7 +124,7 @@ export function toggleSwitchPattern (tracks, id, switchID) {
       return track;
     } else {
       return {...track, 
-        switchPatterns: track.switchPatterns.map((v, i) => i == switchID ? (v+ 1) % 4 : v),
+        switchPatterns: track.switchPatterns.map((v, i) => i == switchID ? (v + 1) % 4 : v),
       };
     }
   });
@@ -147,7 +149,6 @@ export function addSwitchPattern (tracks, id, switchID) {
     } else {
       return {...track, 
         switchArr: track.switchArr.concat(switchID)
-        //sort((a, b) => a - b)
       };
     }
   });
