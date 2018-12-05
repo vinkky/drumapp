@@ -74,6 +74,7 @@ export function muteTrack(tracks, id) {
     }
   });
 }
+
 export function updateTrackNote(tracks, id, note) {
   return tracks.map((track) => {
     if (track.id !== id) {

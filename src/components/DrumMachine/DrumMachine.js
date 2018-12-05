@@ -17,7 +17,6 @@ import Slider, { Range } from "rc-slider";
 
 import Tone from "tone";
 
-
 import "rc-slider/assets/index.css";
 import "./DrumMachine.css";
 

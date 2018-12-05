@@ -72,3 +72,9 @@ export function changeVolume(oneShots, id, vol) {
     }
   });
 }
+
+export function getSampleByID(oneShots, id) {
+  return oneShots.find(obj => {
+    return obj.id === id;
+  }).name;
+}

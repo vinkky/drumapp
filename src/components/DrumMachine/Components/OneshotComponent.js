@@ -13,15 +13,15 @@ class OneshotComponent extends React.Component {
     super(props);
     this.state = {
       oneShots: [
-        {id: 1,  name: "shot_01", vol: 0, keyCode: 81, loop: false, keyEdit: false},
-        {id: 2,  name: "shot_02", vol: 0, keyCode: 87, loop: false, keyEdit: false},
-        {id: 3,  name: "shot_03", vol: 0, keyCode: 69, loop: false, keyEdit: false},
-        {id: 4,  name: "shot_04", vol: 0, keyCode: 82, loop: false, keyEdit: false},
-        {id: 5,  name: "shot_05", vol: 0, keyCode: 84, loop: false, keyEdit: false},
-        {id: 6,  name: "shot_06", vol: 0, keyCode: 89, loop: false, keyEdit: false},
-        {id: 7,  name: "shot_07", vol: 0, keyCode: 85, loop: false, keyEdit: false},
-        {id: 8,  name: "shot_08", vol: 0, keyCode: 73, loop: false, keyEdit: false},
-        {id: 9,  name: "shot_09", vol: 0, keyCode: 79, loop: false, keyEdit: false}
+        {id: 1,  name: "Bass_1", vol: 0, keyCode: 81, loop: false, keyEdit: false},
+        {id: 2,  name: "Bass_2", vol: 0, keyCode: 87, loop: false, keyEdit: false},
+        {id: 3,  name: "Bass_3", vol: 0, keyCode: 69, loop: false, keyEdit: false},
+        {id: 4,  name: "Bass_4", vol: 0, keyCode: 82, loop: false, keyEdit: false},
+        {id: 5,  name: "Bass_5", vol: 0, keyCode: 84, loop: false, keyEdit: false},
+        {id: 6,  name: "Bass_6", vol: 0, keyCode: 89, loop: false, keyEdit: false},
+        {id: 7,  name: "Bass_7", vol: 0, keyCode: 85, loop: false, keyEdit: false},
+        {id: 8,  name: "Bass_8", vol: 0, keyCode: 73, loop: false, keyEdit: false},
+        {id: 9,  name: "Bass_9", vol: 0, keyCode: 79, loop: false, keyEdit: false}
       ],
       caps: null
     };
@@ -55,10 +55,14 @@ class OneshotComponent extends React.Component {
     var result = oneShots.find(obj => {
       return obj.keyCode === code;
     });
+    // pasizieti sita ir pasitikrinti kaip ten su tais erorais
     this.oneshotPlayer.get(result.name).loop = result.loop;
-    this.oneshotPlayer.get(result.name).start(Tone.now()+2.3).volume.value = result.vol;
+    this.oneshotPlayer.get(result.name).start().volume.value = result.vol;
+    //Tone.now()+2.3
+    //pasizieti su tuo time now jei pvz noriu kad butu sync butonas tada sync pagal viska jei ne tai ta tone now 2.3 palikt paprasta
   }
   stop = (name) => {
+    console.log(name);
     this.oneshotPlayer.fadeOut="8n";
     this.oneshotPlayer.get(name).stop();
   }
@@ -68,6 +72,8 @@ class OneshotComponent extends React.Component {
 
   updateShotName = (id, sample) => {
     const {oneShots} = this.state;
+    console.log(oneShots);
+    this.stop(OneShotsControls.getSampleByID(oneShots, id));
     this.updateSamplePlayer(OneShotsControls.updateShotName(oneShots, id, sample));
   };
 
@@ -131,40 +137,38 @@ class OneshotComponent extends React.Component {
 
 export default OneshotComponent;
 
-
 function OneShot(props) {
+  const {oneShot} = props;
   return (
     <div
       style={{backgroundColor: "#b9b9b9", float: "left", width: "90px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}}
       onKeyPress={(e) => props.changeKeycode(e, props.oneShot.id)}
     >
       <Selector 
-        id={props.oneShot.id} 
+        id={oneShot.id} 
         source={LoopSamples} 
-        current={props.oneShot.name} 
+        current={oneShot.name} 
         onChange={props.updateShotName}
       />
       <Slider
         style={{width: "70px"}}
         min={-60}
-        defaultValue={props.oneShot.vol}
+        defaultValue={oneShot.vol}
         max={10} 
         step={3.5}
-        onChange={value => props.changeVolume(props.oneShot.id, parseFloat(value))}
+        onChange={value => props.changeVolume(oneShot.id, parseFloat(value))}
       />
-      <button style={{width: "20px", color: "black"}}className={"patternButton"}>{String.fromCharCode(props.oneShot.keyCode)}</button>
-      <LoopIcon style={props.oneShot.loop ? {width: "20px", color: "red"} : {width: "20px", color: "black"}}
+      <button style={{width: "20px", color: "black"}}className={"patternButton"}>{String.fromCharCode(oneShot.keyCode)}</button>
+      <LoopIcon style={oneShot.loop ? {width: "20px", color: "red"} : {width: "20px", color: "black"}}
         className={"patternButton"} 
         onClick={() => {
-          !props.oneShot.loop ?
-            props.loopShot(props.oneShot.id)
+          !oneShot.loop ?
+            props.loopShot(oneShot.id)
             :
-            props.stop(props.oneShot.name);
-          props.loopShot(props.oneShot.id);
+            props.stop(oneShot.name);
+          props.loopShot(oneShot.id);
         }
         }
-          
-          
       >R</LoopIcon>
     </div>);
 }

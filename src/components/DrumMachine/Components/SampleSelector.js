@@ -32,7 +32,7 @@ class SampleSelector extends React.Component {
         <select 
           type="select-multiple"
           className="SelectList"    
-          style={{backgroundColor: "#747474"}}autoFocus value={current} onChange={this.onChange} onBlur={this.close}>{
+          style={{backgroundColor: "#747474"}} autoFocus value={current} onChange={this.onChange} onBlur={this.close}>{
             source.map((sample, i) => {
               return <option  key={i}>{sample}</option>;
             })
