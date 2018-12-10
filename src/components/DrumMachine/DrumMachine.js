@@ -11,6 +11,7 @@ import TracksComponent from "./Components/TracksComponent";
 import BassComponent from "./Components/BassComponent";
 import OneShotComponent from "./Components/OneshotComponent";
 import NoiseComponent from "./Components/NoiseComponent";
+import EffectsComponent from "./Components/EffectsComponent";
 import { CircleSlider } from "react-circle-slider";
 import Slider, { Range } from "rc-slider";
 
@@ -200,6 +201,34 @@ class MusicBox extends React.Component {
 
         render() {
           return (
+
+           <div className="wrapper">
+           <div className="flex-grid-thirds">
+             <div className="col">This little piggy went to market.</div>
+             <div className="col">This little piggy stayed home.</div>
+             <div className="col">This little piggy had roast beef.</div>
+           </div>
+           <div className="row">
+           
+             <div className="main">
+               <div className="tracks">s</div>
+               <div className="sequence">s</div>
+             </div>
+               <div className="side">
+               dasdasdas
+             </div>
+           </div>
+           </div>
+
+
+
+
+
+
+
+
+
+
             <div className={"Container"}>
               <CustomButton 
                 source={this.loop}
@@ -278,6 +307,7 @@ class MusicBox extends React.Component {
                 toggleTrackBeat={this.toggleTrackBeat}
               />
               <NoiseComponent/>
+              <EffectsComponent/>
               <div className="AudioPlayer">
                 <audio ref={this.audio} controls controlsList="nodownload" autostart="0"></audio>
               </div>
