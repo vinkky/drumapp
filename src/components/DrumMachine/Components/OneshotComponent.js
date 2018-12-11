@@ -116,7 +116,7 @@ class OneshotComponent extends React.Component {
 
   render() {
     return (
-      <div style={{float: "left", marginLeft: "100px"}}>
+      <div style={{float: "left"}}>
         {this.state.oneShots.map((oneShot, i) => {
           return (
             <OneShot
@@ -141,7 +141,7 @@ function OneShot(props) {
   const {oneShot} = props;
   return (
     <div
-      style={{backgroundColor: "#b9b9b9", float: "left", width: "90px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}}
+      style={{backgroundColor: "#b9b9b9", float: "left", width: "96px", bottom: 0, textAlign: "center",border: "2px solid #c3c3c3", borderRadius: "4px", marginLeft: "4px", marginBottom: "4px"}}
       onKeyPress={(e) => props.changeKeycode(e, props.oneShot.id)}
     >
       <Selector 

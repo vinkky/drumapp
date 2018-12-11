@@ -3,6 +3,8 @@
 import React from "react";
 import CustomButton from "./CustomButton";
 import Tone from "tone";
+import ArrowLeftIcon from "@material-ui/icons/keyboardarrowleft";
+import ArrowRightIcon from "@material-ui/icons/keyboardarrowright";
 import Slider from "rc-slider";
 
 class NoiseComponent extends React.Component {
@@ -52,7 +54,7 @@ class NoiseComponent extends React.Component {
    render() {
      this.autoFilter.frequency.value = 50;
      return (
-       <div style={{width: "120px", height: "170px", border: "1px solid black"}}>
+       <div style={{backgroundColor: "#747474", border: "2px solid #c3c3c3", borderRadius: "4px", width: "120px", height: "150px", padding: "10px"}}>
          <NoiseSelect
            nextNoise={this.nextNoise}
            prevNoise={this.prevNoise}
@@ -80,9 +82,15 @@ class NoiseSelect extends React.Component {
     const {prevNoise, noises, currentType, nextNoise} = this.props;
     return (
       <div style={{textAlign: "center"}}>
-        <button style={{display: "inline"}} onClick={prevNoise}>	&lt; </button>
+        <ArrowLeftIcon
+          style={{color: "#283845", cursor: "pointer", display: "inline"}}
+          onClick={prevNoise}
+        />
         <div style={{display: "inline-block", width: "70px"}}>{noises[currentType]}</div>
-        <button style={{display: "inline"}} onClick={nextNoise}> &gt; </button>
+        <ArrowRightIcon
+          style={{color: "#283845", cursor: "pointer", display: "inline"}}
+          onClick={prevNoise}
+        />
       </div>
     );
   }

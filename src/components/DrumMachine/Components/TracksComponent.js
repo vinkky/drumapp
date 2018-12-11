@@ -55,7 +55,7 @@ render() {
       {
         this.props.tracks.map((track, i) => {
           return (
-            <div key={i} style={{backgroundColor: "#b9b9b9", float: "left", height:"200px", width: "96px", bottom: 0, textAlign: "center", border: "2px solid #454545", marginLeft: "4px"}} className="controls">
+            <div key={i} style={{marginBottom: "5px", backgroundColor: "#b9b9b9", float: "left", height:"220px", width: "96px", bottom: 0, textAlign: "center", border: "2px solid #c3c3c3", marginLeft: "4px", borderRadius: "4px"}} className="controls">
               <div
                 style={{width: "10px", 
                   height: "10px", 
@@ -65,7 +65,7 @@ render() {
               />
               <div>
                 <Slider
-                  style={{marginLeft: "33px", height:"60px"}}
+                  style={{marginLeft: "42px", height:"60px"}}
                   min={-62}
                   defaultValue={1}
                   max={12} 

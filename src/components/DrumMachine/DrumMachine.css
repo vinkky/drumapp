@@ -1,11 +1,24 @@
 /* Sequence css */
+/* @import url('https://fonts.googleapis.com/css?family=Prosto+One'); */
+@import url('https://fonts.googleapis.com/css?family=Michroma');
+@import url('https://fonts.googleapis.com/css?family=Michroma');
+
+
+
+
+a {
+ text-decoration: none;
+ color: rgb(24, 24, 24);
+}
+
 
 .PlayButton {
-  width: 50px;
-  height: 20px;
+  width: 60px;
+  height: 30px;
   border-radius: 4px;
   background-color: #F29559;
   border: none;
+  font-family: 'Michroma', sans-serif;
 }
 
 table {
@@ -40,12 +53,13 @@ table tr {
   text-align: center;
   border: 2px solid #747474;
   border-radius: 6px;
+  font-size: 1.2em;;
 }
 
 .beat > a {
   display: inline-block;
   width: 44px;
-  height: 45px;
+  height: 50px;
 }
 
 .disabled-icon {
@@ -73,12 +87,7 @@ table tr {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.Container {
-  background-color:#747474;
-  height: 650px;
-  margin: 0 auto;
-  width: 1000px;
-}
+
 
 /* Slider css */
 
@@ -100,9 +109,7 @@ svg g circle {
 }
 
 .TrackComponent {
-  padding-top: 60px;
   padding-bottom: 10px;
-  margin-left: 100px;
 }
 
 /* Pattern css */
@@ -120,128 +127,33 @@ svg g circle {
   width: 7px;
   background-color: #747474;
 }
-
-
 .Switches button:nth-of-type(1) {
  background: #283845;
 }
 .Switches button:nth-of-type(5) {
  background: #283845;
 }
-
-
 .patternButtonFull {
   background-color: #F29559;
 }
 
 .patternButtonEmpty {
-  background-color: #747474
-}
-.patternButtonOFF {
-  -moz-transition:all 0.5s ease-in-out;
-  -webkit-transition:all 0.5s ease-in-out;
-  -o-transition:all 0.5s ease-in-out;
-  -ms-transition:all 0.5s ease-in-out;
-  transition:all 0.5s ease-in-out;
-  -moz-animation:blink normal 1.5s infinite ease-in-out;
-  /* Firefox */
-  -webkit-animation:blink normal 1.5s infinite ease-in-out;
-  /* Webkit */
-  -ms-animation:blink normal 1.5s infinite ease-in-out;
-  /* IE */
-  animation:blink normal 1.5s infinite ease-in-out;
-  /* Opera */
-}
-
-@keyframes blink {
-  0% {
-         background-color: rgba(116,116,116,1)
-  }
-  50% {
-         background-color: rgba(116,116,116,0.5)
-  }
-  100% {
-         background-color: rgba(116,116,116,1)
-  }
-}
-@-webkit-keyframes blink {
-  0% {
-         background-color: rgba(116,116,116,1)
-  }
-  50% {
-         background-color: rgba(116,116,116,0.5)
-  }
-  100% {
-         background-color: rgba(116,116,116,1)
-  }
-}
-.patternButtonON {
-  -moz-transition:all 0.5s ease-in-out;
-  -webkit-transition:all 0.5s ease-in-out;
-  -o-transition:all 0.5s ease-in-out;
-  -ms-transition:all 0.5s ease-in-out;
-  transition:all 0.5s ease-in-out;
-  -moz-animation:blink1 normal 1.5s infinite ease-in-out;
-  /* Firefox */
-  -webkit-animation:blink1 normal 1.5s infinite ease-in-out;
-  /* Webkit */
-  -ms-animation:blink1 normal 1.5s infinite ease-in-out;
-  /* IE */
-  animation:blink1 normal 1.5s infinite ease-in-out;
-  /* Opera */
-}
-
-@keyframes blink1 {
-  0% {
-         background-color: rgba(242,149,89,1)
-  }
-  50% {
-         background-color: rgba(242,149,89,0.5)
-  }
-  100% {
-         background-color: rgba(242,149,89,1)
-  }
-}
-@-webkit-keyframes blink1 {
-  0% {
-         background-color: rgba(242,149,89,1)
-  }
-  50% {
-         background-color: rgba(242,149,89,0.5)
-  }
-  100% {
-         background-color: rgba(242,149,89,1)
-  }
+  background-color: #747474;
 }
 
 .SelectList::-webkit-scrollbar {
   width: 12px;
 }
-
 .SelectList::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   border-radius: 10px;
 }
-
 .SelectList::-webkit-scrollbar-thumb {
   border-radius: 10px;
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
 
   /* audio player customization */
-
-
-audio {
-  display: block;
-}
-
-audio::-webkit-media-controls-panel{
-  background-color: #c3c3c3;
-  box-shadow: 20px 10px #747474;
-  border-radius: 0%;
-  width: 600px;
-}
-
 .DownloadBtn {
   cursor: pointer;
   text-align: center;
@@ -251,3 +163,63 @@ audio::-webkit-media-controls-panel{
   width: 70px;
   height: 25px;
   }
+.row {  
+   display: flex;
+   flex-wrap: wrap;
+ }
+ .wrapper {
+  width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  /* font-family: 'Prosto One', cursive; */
+  font-family: 'Michroma', sans-serif;
+  font-size: 0.7em;
+  border-top: 10px solid #6e6e6e;
+  border-bottom: 10px solid #6e6e6e;
+  border-left: 25px solid #6e6e6e;
+  border-right: 25px solid #6e6e6e;
+  border-radius: 5px;
+ }
+
+ /* Create two unequal columns that sits next to each other */
+ /* Sidebar/left column */
+.side {
+   flex: 20%;
+   background-color: #818181;
+   height: 514px;
+ } 
+ /* Main column */
+.main {
+   flex: 80%;
+   background-color:#818181;
+   margin-top: 0px;
+ 
+ }
+.flex-grid-thirds {
+   display: flex;
+   width: 1200px;
+   background-color: #818181;
+   justify-content: center ;
+ }
+.flex-grid-thirds .col {
+   width: 33.33%;
+   height: 190px;
+   background-color: #818181;
+ }
+ .tracks {
+  width: 100%;
+   height: 50%;
+   background-color: #747474;
+ }
+ .sequence {
+ width: 100%;
+  height: 150px;
+  background-color: #747474;
+ }
+ 
+ /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+ @media screen and (max-width: 700px) {
+   .row, .navbar {   
+    flex-direction: column;
+   }
+ }

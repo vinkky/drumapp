@@ -4,7 +4,10 @@ import React from "react";
 import CustomButton from "./CustomButton";
 import Tone from "tone";
 import Slider from "rc-slider";
+import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ArrowLeftIcon from "@material-ui/icons/keyboardarrowleft";
+import ArrowRightIcon from "@material-ui/icons/keyboardarrowright";
 import Switch from "@material-ui/core/Switch";
 
 class EffectsComponent extends React.Component {
@@ -68,7 +71,8 @@ class EffectsComponent extends React.Component {
    };
    render() {
      return (
-       <div style={{width: "120px", height: "170px", border: "1px solid black"}}>
+       <div style={{backgroundColor: "#747474", border: "2px solid #c3c3c3", borderRadius: "4px", width: "120px", height: "170px", paddingLeft: "10px", paddingRight: "10px"}}>
+         <h5 style={{textAlign: "center", margin: "0px auto"}}>master filter</h5>
          <FilterSelect
            nextNoise={this.nextNoise}
            prevNoise={this.prevNoise}
@@ -101,11 +105,23 @@ class FilterSelect extends React.Component {
   render() {
     const {prevNoise, filterTypes, currentType, nextNoise} = this.props;
     return (
-      <div style={{textAlign: "center"}}>
-        <button style={{display: "inline"}} onClick={prevNoise}>	&lt; </button>
-        <div style={{display: "inline-block", width: "70px"}}>{filterTypes[currentType]}</div>
-        <button style={{display: "inline"}} onClick={nextNoise}> &gt; </button>
-      </div>
+      <Grid container style={{marginTop: "5px", textAlign: "center", height: "20px"}}>
+        <Grid item xs={2}>
+          <ArrowLeftIcon
+            style={{color: "#283845", cursor: "pointer"}}
+            onClick={prevNoise} 
+          />
+        </Grid>
+        <Grid item xs={8}>
+          <h4 style={{marginLeft: "2px", marginTop: "3px"}}>{filterTypes[currentType]}</h4>
+        </Grid>
+        <Grid item xs={2}>
+          <ArrowRightIcon
+            style={{color: "#283845", cursor: "pointer"}}
+            onClick={prevNoise}
+          />
+        </Grid>
+      </Grid>
     );
   }
 }
