@@ -29,7 +29,7 @@ class OneshotComponent extends React.Component {
     this.oneshotPlayer = OneShotsControls.create(this.state.oneShots);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     document.addEventListener( "keydown", ( event ) => {
       var caps = event.getModifierState && event.getModifierState( "CapsLock" );
       this.setState({caps: caps});
