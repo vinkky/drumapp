@@ -13,6 +13,8 @@ import { CircleSlider } from "react-circle-slider";
 import Slider, { Range } from "rc-slider";
 
 
+import ListItem from "../DashBoard/AudioFile";
+
 import Tone from "tone";
 
 import "rc-slider/assets/index.css";
@@ -238,6 +240,7 @@ class MusicBox extends React.Component {
                       tracks={this.state.tracks}
                       toggleTrackBeat={this.toggleTrackBeat}
                     />
+                    <ListItem/>
                   </div>
                 </div>
                 <div className="side">
