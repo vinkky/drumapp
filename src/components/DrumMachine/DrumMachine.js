@@ -12,8 +12,7 @@ import EffectsComponent from "./Components/EffectsComponent";
 import { CircleSlider } from "react-circle-slider";
 import Slider, { Range } from "rc-slider";
 
-
-import ListItem from "../DashBoard/AudioFile";
+import Tables from "../DashBoard/Tables";
 
 import Tone from "tone";
 
@@ -240,7 +239,7 @@ class MusicBox extends React.Component {
                       tracks={this.state.tracks}
                       toggleTrackBeat={this.toggleTrackBeat}
                     />
-                    <ListItem/>
+                    
                   </div>
                 </div>
                 <div className="side">
@@ -290,6 +289,7 @@ class MusicBox extends React.Component {
                     value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} 
                     onChange={value => this.updateBPM(parseFloat(value))} />
                   <h1>{this.state.bpm}</h1>
+                  <Tables/>
                 </div>
               </div>
             </div>

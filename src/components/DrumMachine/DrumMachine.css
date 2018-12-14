@@ -168,7 +168,7 @@ svg g circle {
    flex-wrap: wrap;
  }
  .wrapper {
-  width: 1200px;
+  width: 1250px;
   height: 100%;
   margin: 0 auto;
   /* font-family: 'Prosto One', cursive; */
@@ -184,20 +184,20 @@ svg g circle {
  /* Create two unequal columns that sits next to each other */
  /* Sidebar/left column */
 .side {
-   flex: 20%;
+   flex: 25%;
    background-color: #818181;
    height: 514px;
  } 
  /* Main column */
 .main {
-   flex: 80%;
+   flex: 75%;
    background-color:#818181;
    margin-top: 0px;
  
  }
 .flex-grid-thirds {
    display: flex;
-   width: 1200px;
+   width: 1250px;
    background-color: #818181;
    justify-content: center ;
  }

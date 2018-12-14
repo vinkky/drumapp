@@ -1,0 +1,84 @@
+/* eslint-disable no-unused-vars */
+import React from "react";
+import FormData  from "form-data";
+import axios from "axios";
+import List from "./List";
+import AudioItem from "./AudioItem";
+
+class Tables extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      audioFiles: [],
+      records: [],
+      patterns: [],
+      loading: true,
+      error: ""
+    };
+  }
+
+  componentDidMount () {
+    this.fetchFiles();
+  }
+
+  fetchFiles = () => {
+    axios.get("http://localhost:5070/tracks")
+      .then((response) => {
+        this.setState({audioFiles: response.data, loading: false}); //.sort((a, b) => (a.filename < b.filename ? -1 : 1))
+      })
+      .catch((error) => {
+        this.setState({error: error});
+      });
+  }
+
+  deleteAudio = (id) =>  {
+    axios.delete(`http://localhost:5070/tracks/${id}`)
+      .then((response) => {
+        this.fetchFiles();
+      })
+      .catch((error) => {
+
+      });
+  }
+
+  onFileChange = (e) => {
+    let files = e.target.files || e.dataTransfer.files;
+    if (!files.length) {
+      console.log("no files");
+    }
+
+    const form = new FormData();
+
+    for (var i = 0; i < files.length; i++) {
+      let file = files.item(i);
+      form.append("track", file);
+    }
+    const config = {
+      headers: { "content-type": "multipart/form-data" }
+    };
+    return axios.post("http://localhost:5070/tracks/uploads", form, config)
+      .then((response) => {
+        this.fetchFiles();
+      })
+      .catch((error) => {
+       console.log(error);
+      });
+  }
+  
+  
+  renderAudioFiles = (profile,	key) =>	{
+    return	(<AudioItem	{...profile} key={	key	} deleteAudio={this.deleteAudio}	/>);
+  }
+ 
+  render() {
+    return (
+      <div>
+        <input id="my-file-selector" multiple type="file" name="track" onChange={this.onFileChange}/>
+
+        {this.state.loading ? <div>loading</div> : <List	items={	this.state.audioFiles	}	itemRenderer={	this.renderAudioFiles	}	/>}
+      </div>
+    );
+  }
+}
+
+export default Tables;
