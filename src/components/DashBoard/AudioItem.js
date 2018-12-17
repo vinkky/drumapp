@@ -17,8 +17,8 @@ class AudioItem extends React.Component {
     this.state = {
       playing: false
     };
-    this.audio.src = `http://localhost:5070/tracks/${this.props.filename}`;
-    console.log(this.props._id)
+    this.audio.src = `http://localhost:5070/tracks/${this.props.audioFile.filename}`;
+    console.log(this.props.audioFile.filename);
   }
 
   componentWillMount() {
@@ -26,7 +26,11 @@ class AudioItem extends React.Component {
       this.setState({playing: false});
     }, false);
   }
+  componentWillUnmount() {
+    this.pauseSong();
+  }
 
+ 
  playSong = () => {
    this.setState({ playing: true });
    this.audio.play(); 
@@ -38,6 +42,7 @@ class AudioItem extends React.Component {
  }
 
   togglePause = () =>{
+    console.log(this.props.audioFile.filename);
     if (this.audio.paused) {
       this.playSong();
     } else {
@@ -49,16 +54,16 @@ class AudioItem extends React.Component {
     return (
       <ListItem>
         <ListItemText
-          primary={this.props.filename}
+          primary={this.props.audioFile.filename}
         />
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete">
-            {!this.state.playing ?  <PlayIcon onClick={() => this.togglePause(this.props.filename)} /> :  <PauseIcon onClick={() => this.togglePause()} />}
+            {!this.state.playing ?  <PlayIcon onClick={() => this.togglePause(this.props.audioFile.filename)} /> :  <PauseIcon onClick={() => this.togglePause()} />}
           </IconButton>
           <IconButton aria-label="Delete">
             <SettingsIcon />
           </IconButton>
-          <IconButton aria-label="Delete" onClick={() => this.props.deleteAudio(this.props._id)}>
+          <IconButton aria-label="Delete" onClick={() => this.props.deleteAudio(this.props.audioFile._id)}>
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>

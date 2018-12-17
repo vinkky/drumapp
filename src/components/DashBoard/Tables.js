@@ -22,9 +22,11 @@ class Tables extends React.Component {
   }
 
   fetchFiles = () => {
+   console.log('fetch files suveike');
     axios.get("http://localhost:5070/tracks")
       .then((response) => {
         this.setState({audioFiles: response.data, loading: false}); //.sort((a, b) => (a.filename < b.filename ? -1 : 1))
+        console.log(this.state.audioFiles);
       })
       .catch((error) => {
         this.setState({error: error});
@@ -32,6 +34,7 @@ class Tables extends React.Component {
   }
 
   deleteAudio = (id) =>  {
+   console.log(id);
     axios.delete(`http://localhost:5070/tracks/${id}`)
       .then((response) => {
         this.fetchFiles();
@@ -66,16 +69,12 @@ class Tables extends React.Component {
   }
   
   
-  renderAudioFiles = (profile,	key) =>	{
-    return	(<AudioItem	{...profile} key={	key	} deleteAudio={this.deleteAudio}	/>);
-  }
- 
   render() {
     return (
       <div>
         <input id="my-file-selector" multiple type="file" name="track" onChange={this.onFileChange}/>
 
-        {this.state.loading ? <div>loading</div> : <List	items={	this.state.audioFiles	}	itemRenderer={	this.renderAudioFiles	}	/>}
+        {this.state.loading ? <div>loading</div> : <List	items={	this.state.audioFiles	} deleteAudio={this.deleteAudio}/>}
       </div>
     );
   }
