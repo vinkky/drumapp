@@ -7,6 +7,21 @@ import ArrowLeftIcon from "@material-ui/icons/keyboardarrowleft";
 import ArrowRightIcon from "@material-ui/icons/keyboardarrowright";
 import Slider from "rc-slider";
 
+const styles = {
+  container: {
+    backgroundColor: "#747474", 
+    border: "2px solid #c3c3c3", 
+    borderRadius: "4px", width: "120px", 
+    height: "150px", 
+    padding: "10px"
+  },
+  icon: {
+    color: "#283845", 
+    cursor: "pointer", 
+    display: "inline"
+  }
+};
+
 class NoiseComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +69,7 @@ class NoiseComponent extends React.Component {
    render() {
      this.autoFilter.frequency.value = 50;
      return (
-       <div style={{backgroundColor: "#747474", border: "2px solid #c3c3c3", borderRadius: "4px", width: "120px", height: "150px", padding: "10px"}}>
+       <div style={styles.container}>
          <NoiseSelect
            nextNoise={this.nextNoise}
            prevNoise={this.prevNoise}
@@ -83,12 +98,12 @@ class NoiseSelect extends React.Component {
     return (
       <div style={{textAlign: "center"}}>
         <ArrowLeftIcon
-          style={{color: "#283845", cursor: "pointer", display: "inline"}}
+          style={styles.icon}
           onClick={prevNoise}
         />
         <div style={{display: "inline-block", width: "70px"}}>{noises[currentType]}</div>
         <ArrowRightIcon
-          style={{color: "#283845", cursor: "pointer", display: "inline"}}
+          style={styles.icon}
           onClick={prevNoise}
         />
       </div>

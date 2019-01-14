@@ -11,7 +11,6 @@ import Toolbar from "./components/Toolbar/Toolbar";
 import SideDrawer from "./components/SideDrawer/SideDrawer";
 import Backdrop from "./components/Backdrop/Backdrop";
 import Login from "./components/Authentication/Login/Login";
-import CreateArticle from "./components/Articles/createArticle";
 import Register from "./components/Authentication/Register/Register";
 import Forgot from "./components/Authentication/Reset-Password/Forgot";
 import Reset from "./components/Authentication/Reset-Password/Reset";
@@ -76,7 +75,6 @@ class App extends Component {
                 <main className="mainContainer">
                   <Route exact path="/" component={Register} />
                   <Route exact path="/login" component={Login} />
-                  <Route path="/articles/create" component={CreateArticle} />
                   <Route path="/drum" component={DrumMachine} />
                   <Route path="/register" component={Register} />
                   <Route path="/forgot" component={Forgot} />

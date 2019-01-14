@@ -1,8 +1,10 @@
+/* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import FormData  from "form-data";
 import axios from "axios";
 import List from "./List";
+import Table from "./Table";
 import AudioItem from "./AudioItem";
 
 class Tables extends React.Component {
@@ -22,7 +24,7 @@ class Tables extends React.Component {
   }
 
   fetchFiles = () => {
-   console.log('fetch files suveike');
+    console.log("fetch files suveike");
     axios.get("http://localhost:5070/tracks")
       .then((response) => {
         this.setState({audioFiles: response.data, loading: false}); //.sort((a, b) => (a.filename < b.filename ? -1 : 1))
@@ -34,7 +36,7 @@ class Tables extends React.Component {
   }
 
   deleteAudio = (id) =>  {
-   console.log(id);
+    console.log(id);
     axios.delete(`http://localhost:5070/tracks/${id}`)
       .then((response) => {
         this.fetchFiles();
@@ -64,17 +66,14 @@ class Tables extends React.Component {
         this.fetchFiles();
       })
       .catch((error) => {
-       console.log(error);
       });
   }
-  
   
   render() {
     return (
       <div>
         <input id="my-file-selector" multiple type="file" name="track" onChange={this.onFileChange}/>
-
-        {this.state.loading ? <div>loading</div> : <List	items={	this.state.audioFiles	} deleteAudio={this.deleteAudio}/>}
+        {this.state.loading ? <div>loading</div> : <Table	items={	this.state.audioFiles	} deleteAudio={this.deleteAudio}/>}
       </div>
     );
   }

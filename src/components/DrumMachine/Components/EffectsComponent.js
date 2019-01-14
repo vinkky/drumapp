@@ -10,6 +10,18 @@ import ArrowLeftIcon from "@material-ui/icons/keyboardarrowleft";
 import ArrowRightIcon from "@material-ui/icons/keyboardarrowright";
 import Switch from "@material-ui/core/Switch";
 
+const style = {
+  container: {
+    marginTop: "5px", 
+    textAlign: "center", 
+    height: "20px"
+  },
+  icon: {
+    color: "#283845", 
+    cursor: "pointer"
+  }
+};
+
 class EffectsComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -105,10 +117,10 @@ class FilterSelect extends React.Component {
   render() {
     const {prevNoise, filterTypes, currentType, nextNoise} = this.props;
     return (
-      <Grid container style={{marginTop: "5px", textAlign: "center", height: "20px"}}>
+      <Grid container style={style.container}>
         <Grid item xs={2}>
           <ArrowLeftIcon
-            style={{color: "#283845", cursor: "pointer"}}
+            style={style.icon}
             onClick={prevNoise} 
           />
         </Grid>
@@ -117,7 +129,7 @@ class FilterSelect extends React.Component {
         </Grid>
         <Grid item xs={2}>
           <ArrowRightIcon
-            style={{color: "#283845", cursor: "pointer"}}
+            style={style.icon}
             onClick={prevNoise}
           />
         </Grid>

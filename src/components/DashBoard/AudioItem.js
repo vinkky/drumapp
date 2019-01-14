@@ -8,7 +8,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import SettingsIcon from "@material-ui/icons/Settings";
 import PlayIcon from "@material-ui/icons/playarrow";
 import PauseIcon from "@material-ui/icons/pause";
-
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
 
 class AudioItem extends React.Component {
   constructor(props) {
@@ -30,7 +31,6 @@ class AudioItem extends React.Component {
     this.pauseSong();
   }
 
- 
  playSong = () => {
    this.setState({ playing: true });
    this.audio.play(); 
@@ -52,22 +52,26 @@ class AudioItem extends React.Component {
 
   render() {
     return (
-      <ListItem>
-        <ListItemText
-          primary={this.props.audioFile.filename}
-        />
-        <ListItemSecondaryAction>
+      <TableRow >
+        <TableCell >
+          {this.props.audioFile.filename}
+        </TableCell>
+        <TableCell style={{width: "50px", padding: "0px"}}>
           <IconButton aria-label="Delete">
             {!this.state.playing ?  <PlayIcon onClick={() => this.togglePause(this.props.audioFile.filename)} /> :  <PauseIcon onClick={() => this.togglePause()} />}
           </IconButton>
+        </TableCell>
+        <TableCell style={{width: "50px", padding: "0px"}}>
           <IconButton aria-label="Delete">
             <SettingsIcon />
           </IconButton>
+        </TableCell>
+        <TableCell style={{width: "50px", padding: "0px"}}>
           <IconButton aria-label="Delete" onClick={() => this.props.deleteAudio(this.props.audioFile._id)}>
             <DeleteIcon />
           </IconButton>
-        </ListItemSecondaryAction>
-      </ListItem>
+        </TableCell>
+      </TableRow >
     );
   }
 }

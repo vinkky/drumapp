@@ -8,6 +8,28 @@ import Selector from "./SampleSelector";
 import LoopIcon from "@material-ui/icons/repeat";
 import Slider from "rc-slider";
 
+const styles = {
+  div1: {
+    backgroundColor: "#b9b9b9", 
+    float: "left", 
+    width: "96px", 
+    bottom: 0, 
+    textAlign: "center",
+    border: "2px solid #c3c3c3", 
+    borderRadius: "4px", 
+    marginLeft: "4px", 
+    marginBottom: "4px"
+  },
+  col1: {
+    width: "20px", 
+    color: "black"
+  },
+  col2: {
+    width: "20px", 
+    color: "red"
+  }
+};
+
 class OneshotComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -62,7 +84,6 @@ class OneshotComponent extends React.Component {
     //pasizieti su tuo time now jei pvz noriu kad butu sync butonas tada sync pagal viska jei ne tai ta tone now 2.3 palikt paprasta
   }
   stop = (name) => {
-    console.log(name);
     this.oneshotPlayer.fadeOut="8n";
     this.oneshotPlayer.get(name).stop();
   }
@@ -72,7 +93,6 @@ class OneshotComponent extends React.Component {
 
   updateShotName = (id, sample) => {
     const {oneShots} = this.state;
-    console.log(oneShots);
     this.stop(OneShotsControls.getSampleByID(oneShots, id));
     this.updateSamplePlayer(OneShotsControls.updateShotName(oneShots, id, sample));
   };
@@ -80,7 +100,6 @@ class OneshotComponent extends React.Component {
   loopShot = (id) => {
     const {oneShots} = this.state;
     this.updateSamples(OneShotsControls.loopShot(oneShots, id));
-    console.log(this.state.oneShots);
   };
 
  updateSamplePlayer = (newTracks) => {
@@ -141,7 +160,7 @@ function OneShot(props) {
   const {oneShot} = props;
   return (
     <div
-      style={{backgroundColor: "#b9b9b9", float: "left", width: "96px", bottom: 0, textAlign: "center",border: "2px solid #c3c3c3", borderRadius: "4px", marginLeft: "4px", marginBottom: "4px"}}
+      style={styles.div1}
       onKeyPress={(e) => props.changeKeycode(e, props.oneShot.id)}
     >
       <Selector 
@@ -158,8 +177,8 @@ function OneShot(props) {
         step={3.5}
         onChange={value => props.changeVolume(oneShot.id, parseFloat(value))}
       />
-      <button style={{width: "20px", color: "black"}}className={"patternButton"}>{String.fromCharCode(oneShot.keyCode)}</button>
-      <LoopIcon style={oneShot.loop ? {width: "20px", color: "red"} : {width: "20px", color: "black"}}
+      <button style={styles.col1}className={"patternButton"}>{String.fromCharCode(oneShot.keyCode)}</button>
+      <LoopIcon style={oneShot.loop ? styles.col2 : styles.col1}
         className={"patternButton"} 
         onClick={() => {
           !oneShot.loop ?
