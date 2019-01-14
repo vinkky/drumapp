@@ -70,6 +70,7 @@ class NoiseComponent extends React.Component {
      this.autoFilter.frequency.value = 50;
      return (
        <div style={styles.container}>
+         <h5 style={{textAlign: "center", margin: "0px auto"}}>noise generator</h5>
          <NoiseSelect
            nextNoise={this.nextNoise}
            prevNoise={this.prevNoise}
