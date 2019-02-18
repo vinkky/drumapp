@@ -82,6 +82,7 @@ class EffectsComponent extends React.Component {
      console.log(this.state.checked);
    };
    render() {
+    console.log(this.state.checked);
      return (
        <div style={{backgroundColor: "#747474", border: "2px solid #c3c3c3", borderRadius: "4px", width: "120px", height: "170px", paddingLeft: "10px", paddingRight: "10px"}}>
          <h5 style={{textAlign: "center", margin: "0px auto"}}>master filter</h5>

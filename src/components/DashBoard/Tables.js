@@ -6,12 +6,15 @@ import axios from "axios";
 import List from "./List";
 import Table from "./Table";
 import AudioItem from "./AudioItem";
+import SearchWidget from "./SearchWidget";
+
 
 class Tables extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       audioFiles: [],
+      filteredFiles: [],
       records: [],
       patterns: [],
       loading: true,
@@ -27,7 +30,7 @@ class Tables extends React.Component {
     console.log("fetch files suveike");
     axios.get("http://localhost:5070/tracks")
       .then((response) => {
-        this.setState({audioFiles: response.data, loading: false}); //.sort((a, b) => (a.filename < b.filename ? -1 : 1))
+        this.setState({audioFiles: response.data, loading: false, filteredFiles: response.data}); //.sort((a, b) => (a.filename < b.filename ? -1 : 1))
         console.log(this.state.audioFiles);
       })
       .catch((error) => {
@@ -68,12 +71,25 @@ class Tables extends React.Component {
       .catch((error) => {
       });
   }
+
+  filterList = (event) =>{
+    var filteredFiles = this.state.audioFiles;
+    filteredFiles = filteredFiles.filter((item) => {
+      return item.filename.toLowerCase().search(
+        event.target.value.toLowerCase()) !== -1;
+    });
+    this.setState({filteredFiles});
+    console.log("veikia");
+  }
   
   render() {
     return (
       <div>
+        <SearchWidget
+          onChange={this.filterList}
+        />
         <input id="my-file-selector" multiple type="file" name="track" onChange={this.onFileChange}/>
-        {this.state.loading ? <div>loading</div> : <Table	items={	this.state.audioFiles	} deleteAudio={this.deleteAudio}/>}
+        {this.state.loading ? <div>loading</div> : <Table	items={	this.state.filteredFiles	} deleteAudio={this.deleteAudio}/>}
       </div>
     );
   }

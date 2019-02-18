@@ -32,16 +32,6 @@ function loopProcessor  (tracks, beatNotifier) {
   }).toMaster();
   return (time, index) => {
     beatNotifier(index);
-    // for (let y = 0; y < noteNames.length; y++) {
-    //     if (tracks[y].beats[index]) {
-    //         keys.get(noteNames[y]).start(time, 0, tracks[y].note, 0);
-    //         keys
-    //             .get(noteNames[y]).volume.value = tracks[y].muted
-    //                 ? -Infinity
-    //                 :  tracks[y].vol;
-    //     }
-    // }
-
     tracks.forEach(({name, vol, muted, note, beats}) => {
       if (beats[index]) {
         try {

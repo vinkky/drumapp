@@ -2,6 +2,7 @@
 import React  from "react";
 import Tone from "tone";
 import * as OneShotsControls from "../Controls/OneShotsControls";
+import * as controls from "../Controls/Trackcontrols";
 import Samples from "../../../sounds/shots.json";
 import LoopSamples from "../../../sounds/loops.json";
 import Selector from "./SampleSelector";
@@ -94,7 +95,7 @@ class OneshotComponent extends React.Component {
   updateShotName = (id, sample) => {
     const {oneShots} = this.state;
     this.stop(OneShotsControls.getSampleByID(oneShots, id));
-    this.updateSamplePlayer(OneShotsControls.updateShotName(oneShots, id, sample));
+    this.updateSamplePlayer(controls.updateTrackSample(oneShots, id, sample));
   };
 
   loopShot = (id) => {
@@ -109,7 +110,7 @@ class OneshotComponent extends React.Component {
 
   changeVolume = (id, vol) => {
     const {oneShots} = this.state;
-    this.updateSamples(OneShotsControls.changeVolume(oneShots , id, vol));
+    this.updateSamples(controls.setTrackVolume(oneShots , id, vol));
   }
 
   changeKeycode = (keyCode, id) => {

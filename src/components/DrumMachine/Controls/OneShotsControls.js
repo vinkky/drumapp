@@ -53,26 +53,6 @@ export function loopShot(oneShots, id) {
   });
 }
 
-export function updateShotName(oneShots, id, sample) {
-  return oneShots.map((oneShot) => {
-    if (oneShot.id !== id) {
-      return oneShot;
-    } else {
-      return {...oneShot, name: sample};
-    }
-  });
-}
-
-export function changeVolume(oneShots, id, vol) {
-  return oneShots.map((oneShot) => {
-    if (oneShot.id !== id) {
-      return oneShot;
-    } else {
-      return {...oneShot, vol};
-    }
-  });
-}
-
 export function getSampleByID(oneShots, id) {
   return oneShots.find(obj => {
     return obj.id === id;
