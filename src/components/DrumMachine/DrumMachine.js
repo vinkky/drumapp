@@ -19,16 +19,16 @@ import Tone from "tone";
 import "rc-slider/assets/index.css";
 import "./DrumMachine.css";
 
-setTimeout(() => {
-  audioScene();
-}, 0);
+// setTimeout(() => {
+//   audioScene();
+// }, 0);
 
-function audioScene() {
-  ReactDOM.render(
-    <MusicBox  />,
-    document.getElementById("root")
-  );
-}
+// function audioScene() {
+//   ReactDOM.render(
+//     <MusicBox  />,
+//     document.getElementById("root")
+//   );
+// }
 
 class MusicBox extends React.Component {
   constructor(props) {
@@ -78,7 +78,47 @@ class MusicBox extends React.Component {
       this.myRef.current.href =  URL.createObjectURL(blob);
     };
   }
-
+  componentDidMount() {
+    window.addEventListener("keydown", this.handleKeyboardInput.bind(this));
+  }
+  componentWillUnmount() {
+    window.removeEventListener("keydown", this.handleKeyboardInput.bind(this));
+  }
+  handleKeyboardInput = e => {
+    const code = e.keyCode ? e.keyCode : e.which;
+    switch (code) {
+    case 49:
+      this.selectTrack(0);
+      break;
+    case 50:
+      this.selectTrack(1);
+      break;
+    case 51:
+      this.selectTrack(2);
+      break;
+    case 52:
+      this.selectTrack(3);
+      break;
+    case 53:
+      this.selectTrack(4);
+      break;
+    case 54:
+      this.selectTrack(5);
+      break;
+    case 55:
+      this.selectTrack(6);
+      break;
+    case 56:
+      this.selectTrack(7);
+      break;
+    case 57:
+      this.selectTrack(8);
+      break;
+    default:
+      return false;
+    }
+  };
+ 
         // Pattern functionality
         updatePatternMode = () => {
           this.setState({patternMode: !this.state.patternMode});
@@ -195,105 +235,50 @@ class MusicBox extends React.Component {
 
         render() {
           return (
-            <div className="wrapper">
-              <div className="flex-grid-thirds">
-                <div className="col"> <NoiseComponent/></div>
-                <div className="col"><EffectsComponent/></div>
-                <div className="col">            <div className="AudioPlayer">
-                  <audio ref={this.audio} controls controlsList="nodownload" autostart="0"></audio>
-                </div>
-                <a className="DownloadBtn" ref={this.myRef} href="" download>download</a></div>
+            <div className="main">
+              <div className="tracks">
+                <TracksComponent
+                  index={this.state.currentBeat}
+                  currentBar={this.state.currentBar}
+                  tracks={this.state.tracks}
+                  notes={this.state.notes}
+                  toggleTrackBeat={this.toggleTrackBeat}
+                  deleteTrack={this.deleteTrack}
+                  muteTrack={this.muteTrack}
+                  addTrackPatern={this.addTrackPatern}
+                  changeTrackPattern={this.changeTrackPattern}
+                  clearTrack={this.clearTrack}
+                  setTrackVolume={this.setTrackVolume}
+                  updateTrackSample={this.updateTrackSample}
+                  updateTrackNote={this.updateTrackNote}
+                  toggleSwitchPattern={this.toggleSwitchPattern}
+                  switchPatternMode={this.switchPatternMode}
+                  patternMode={this.state.patternMode}
+                  selectedTrack={this.state.selectedTrack}/>
               </div>
-              <div className="row">
-                <div className="main">
-                  <div className="tracks">
-                    <OneShotComponent/>
-                    <TracksComponent
-                      index={this.state.currentBeat}
-                      currentBar={this.state.currentBar}
-                      tracks={this.state.tracks}
-                      notes={this.state.notes}
-                      toggleTrackBeat={this.toggleTrackBeat}
-                      deleteTrack={this.deleteTrack}
-                      muteTrack={this.muteTrack}
-                      addTrackPatern={this.addTrackPatern}
-                      changeTrackPattern={this.changeTrackPattern}
-                      clearTrack={this.clearTrack}
-                      setTrackVolume={this.setTrackVolume}
-                      updateTrackSample={this.updateTrackSample}
-                      updateTrackNote={this.updateTrackNote}
-                      toggleSwitchPattern={this.toggleSwitchPattern}
-                      switchPatternMode={this.switchPatternMode}
-                      patternMode={this.state.patternMode}
-                      selectedTrack={this.state.selectedTrack}
-                      selectTrack={this.selectTrack}/>
-                  </div>
-                  <div className="sequence">
-   
-                    <SequenceBar
-                      selectedTrack={this.state.selectedTrack}
-                      index={this.state.currentBeat}
-                      patternMode={this.state.patternMode}
-                      pattern={this.state.pattern}
-                      togglePaternBeat={this.togglePaternBeat}
-                      tracks={this.state.tracks}
-                      toggleTrackBeat={this.toggleTrackBeat}
-                    />
-                    
-                  </div>
-                </div>
-                <div className="side">
-                  <CustomButton 
-                    source={this.loop}
-                    click={"Play"}
-                    unclick={"Stop"}/>
-                  <CustomButton 
-                    source={this.recorder}
-                    click={"Record"}
-                    unclick={"Stop"}/>
-                  <Slider
-                    style={{height:"60px"}}
-                    min={-50}
-                    defaultValue={0}
-                    max={12} 
-                    step={1}
-                    vertical={true}
-                    onChange={value => this.changeMasterVolume(parseFloat(value))}
-                  />
-                  <button
-                    style={this.state.patternMode ?{backgroundColor: "#283845"} : {backgroundColor: "#B8B08D"}}
-                    onClick={this.updatePatternMode} 
-                  >
-                    PT MODE
-                  </button>
-                  {this.state.switchLengths.map((item, i) => {
-                    return (
-                      <button 
-                        style={i == this.state.selectedLength ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
-                        key={i}
-                        onClick={() => this.changeSwitchLength(i)}
-                      >
-                        {item}
-                      </button>
-                    );
-                  })
-                  }
+              <div className="sequence">
+                <SequenceBar
+                  selectedTrack={this.state.selectedTrack}
+                  index={this.state.currentBeat}
+                  patternMode={this.state.patternMode}
+                  pattern={this.state.pattern}
+                  togglePaternBeat={this.togglePaternBeat}
+                  tracks={this.state.tracks}
+                  toggleTrackBeat={this.toggleTrackBeat}
+                />
+              </div>
+              <CustomButton 
+                source={this.loop}
+                click={"Play"}
+                unclick={"Stop"}/>
+              {
+                this.state.tracks.length <= 8 ?
                   <button onClick={this.addTrack}>
                       Add sound
-                  </button>
-                  <CircleSlider 
-                    className={"CircleKnob"}
-                    circleColor={"#283845"}
-                    progressColor={"#B8B08D"}
-                    knobColor={"#B8B08D"}
-                    value={this.state.bpm} min={30} max={240} size={50} knobRadius={5}  circleWidth={2}  progressWidth={4} 
-                    onChange={value => this.updateBPM(parseFloat(value))} />
-                  <h1>{this.state.bpm}</h1>
-                </div>
-              </div>
-              <Tables/>
+                  </button> 
+                  : null
+              }
             </div>
-
           );
         }
 }

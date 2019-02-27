@@ -14,11 +14,10 @@ import Login from "./components/Authentication/Login/Login";
 import Register from "./components/Authentication/Register/Register";
 import Forgot from "./components/Authentication/Reset-Password/Forgot";
 import Reset from "./components/Authentication/Reset-Password/Reset";
-import DrumMachine from "./components/DrumMachine/DrumMachine";
 import { setCurrent, logoutUser } from "./actions/authActions";
 import setAuthToken from "./utils/setAuthToken";
 import { loadReCaptcha } from "react-recaptcha-google";
-
+import DrumMachine from "./components/DrumMachine";
 
 if (localStorage.jwtToken) {
   // Set auth token header auth

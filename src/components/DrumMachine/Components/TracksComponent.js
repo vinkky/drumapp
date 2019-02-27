@@ -10,57 +10,18 @@ import Selector from "./SampleSelector";
 import samples from "../../../sounds/drums.json";
 import "rc-slider/assets/index.css";
 
-class TracksComponent extends React.Component {
-  componentWillMount() {
-    window.addEventListener("keydown", this.handleKeyboardInput.bind(this));
-  }
-
-handleKeyboardInput = e => {
-  const code = e.keyCode ? e.keyCode : e.which;
-  switch (code) {
-  case 49:
-    this.props.selectTrack(0);
-    break;
-  case 50:
-    this.props.selectTrack(1);
-    break;
-  case 51:
-    this.props.selectTrack(2);
-    break;
-  case 52:
-    this.props.selectTrack(3);
-    break;
-  case 53:
-    this.props.selectTrack(4);
-    break;
-  case 54:
-    this.props.selectTrack(5);
-    break;
-  case 55:
-    this.props.selectTrack(6);
-    break;
-  case 56:
-    this.props.selectTrack(7);
-    break;
-  case 57:
-    this.props.selectTrack(8);
-    break;
-  default:
-    return false;
-  }
-};
-render() {
+const TracksComponent = (props) => {
   return (
     <div  className={"TrackComponent"}>
       {
-        this.props.tracks.map((track, i) => {
+        props.tracks.map((track, i) => {
           return (
-            <div key={i} style={{marginBottom: "5px", backgroundColor: "#b9b9b9", float: "left", height:"220px", width: "96px", bottom: 0, textAlign: "center", border: "2px solid #c3c3c3", marginLeft: "4px", borderRadius: "4px"}} className="controls">
+            <div key={track.id} style={{marginBottom: "5px", backgroundColor: "#b9b9b9", float: "left", height:"220px", width: "96px", bottom: 0, textAlign: "center", border: "2px solid #c3c3c3", marginLeft: "4px", borderRadius: "4px"}} className="controls">
               <div
                 style={{width: "10px", 
                   height: "10px", 
                   borderRadius: "50%",
-                  backgroundColor: i == this.props.selectedTrack ? "red" : "black" 
+                  backgroundColor: i == props.selectedTrack ? "red" : "black" 
                 }}
               />
               <div>
@@ -71,7 +32,7 @@ render() {
                   max={12} 
                   step={3.7}
                   vertical={true}
-                  onChange={value => this.props.setTrackVolume(track.id, parseFloat(value))}
+                  onChange={value => props.setTrackVolume(track.id, parseFloat(value))}
                 />
               </div>
               <div>
@@ -80,11 +41,11 @@ render() {
                     !track.muted ? 
                       <VolumeOnIcon
                         style={{color: "#283845", cursor: "pointer"}}
-                        onClick={() => this.props.muteTrack(track.id)}
+                        onClick={() => props.muteTrack(track.id)}
                       /> :
                       <VolumeOffIcon
                         style={{color: "#283845", cursor: "pointer"}}
-                        onClick={() => this.props.muteTrack(track.id)}
+                        onClick={() => props.muteTrack(track.id)}
                       />
                   }
                 </div>
@@ -92,16 +53,16 @@ render() {
                   {track.beats.some(v => v) ?
                     <a href="" title="Clear track" onClick={event => {
                       event.preventDefault();
-                      this.props.clearTrack(track.id);
+                      props.clearTrack(track.id);
                     }}><ClearIcon name="delete"/></a> :
                     <ClearIcon className="disabled-icon" name="delete"/>}
                   <DeleteIcon 
                     style={{cursor: "pointer"}}
-                    onClick={() => {this.props.deleteTrack(track.id);}}
+                    onClick={() => {props.deleteTrack(track.id);}}
                     className="disabled-icon"/>
                   <PatternIcon
                     style={{cursor: "pointer"}}
-                    onClick={() => {this.props.switchPatternMode(track.id);}}
+                    onClick={() => {props.switchPatternMode(track.id);}}
                     className={track.switchMode ?  null : "disabled-icon"}
                   />
                 </div>
@@ -111,18 +72,18 @@ render() {
                   height: "10px", 
                   borderRadius: "50%",
                   margin: "0px auto",
-                  backgroundColor: track.beats[this.props.index] == true ? "red" : "black" 
+                  backgroundColor: track.beats[props.index] == true ? "red" : "black" 
                 }}
               />
               <div class="Switches">
                 {track.switchPatterns.map((pattern, i) => {
                   return (
                     <button 
-                      style={!track.switchMode ?{backgroundColor: "#A5A5A5"} : i == this.props.currentBar ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
+                      style={!track.switchMode ?{backgroundColor: "#A5A5A5"} : i == props.currentBar ? {backgroundColor: "#283845"} : {backgroundColor: "#747474"}}
                       className="patternSelectBtn"
                       key={i}
                       onClick={ () => {
-                        this.props.toggleSwitchPattern(track.id, i);
+                        props.toggleSwitchPattern(track.id, i);
                       }}
                     >
                       {pattern + 1}
@@ -139,10 +100,10 @@ render() {
                       style={track.currPattern === i  ? {backgroundColor: "#283845"} : pattern.some(v => v) ? {backgroundColor: "#F29559"} : {backgroundColor: "#747474"}}
                       key={i}
                       onClick={ () => {
-                        this.props.patternMode === true  ? 
-                          this.props.addTrackPatern(track.id, i)
+                        props.patternMode === true  ? 
+                          props.addTrackPatern(track.id, i)
                           : 
-                          this.props.changeTrackPattern(track.id, i);
+                          props.changeTrackPattern(track.id, i);
                       }}
                     >
                       {i+1}
@@ -152,16 +113,14 @@ render() {
                 }
               </div>
               <div>
-                <Selector id={track.id} source={samples} current={track.name} onChange={this.props.updateTrackSample} /><div/>
-                <Selector id={track.id} source={this.props.notes} current={track.note} onChange={this.props.updateTrackNote} />
+                <Selector id={track.id} source={samples} current={track.name} onChange={props.updateTrackSample} /><div/>
+                <Selector id={track.id} source={props.notes} current={track.note} onChange={props.updateTrackNote} />
               </div>
             </div>
           );
         })
       }
     </div>
-
   );
-}
-}
+};
 export default TracksComponent;

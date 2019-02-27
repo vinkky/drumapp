@@ -64,14 +64,12 @@ class EffectsComponent extends React.Component {
        this.autoFilter.wet.value = this.state.wet;
      }
    }
-   changeFreq = (val) => {
-     this.setState({baseFrequency : val});
-     this.autoFilter.baseFrequency = this.state.baseFrequency;
+
+   changeValue = name => val => {
+     this.setState({[name] : val});
+     this.autoFilter.name = this.state.name;
    }
-   changeOctaves = (val) => {
-     this.setState({octaves : val});
-     this.autoFilter.octaves = this.state.octaves;
-   }
+   
    handleChange = name => event => {
      this.setState({ [name]: event.target.checked });
      if (this.state.checked) {
@@ -82,7 +80,6 @@ class EffectsComponent extends React.Component {
      console.log(this.state.checked);
    };
    render() {
-    console.log(this.state.checked);
      return (
        <div style={{backgroundColor: "#747474", border: "2px solid #c3c3c3", borderRadius: "4px", width: "120px", height: "170px", paddingLeft: "10px", paddingRight: "10px"}}>
          <h5 style={{textAlign: "center", margin: "0px auto"}}>master filter</h5>
@@ -93,8 +90,8 @@ class EffectsComponent extends React.Component {
            currentType={this.state.currentType}/>
          <NoiseControls
            changeWet={this.changeWet}
-           changeFreq={this.changeFreq}
-           changeOctaves={this.changeOctaves}
+           changeFreq={this.changeValue("baseFrequency")}
+           changeOctaves={this.changeValue("octaves")}
            wet={this.state.wet}
            frequency={this.state.baseFrequency}
            octaves={this.state.octaves}
@@ -107,7 +104,7 @@ class EffectsComponent extends React.Component {
                value="checked"
              />
            }
-           label={this.state.checked? "on" : "off"}
+           label={this.state.checked ? "on" : "off"}
          />
        </div>
      );

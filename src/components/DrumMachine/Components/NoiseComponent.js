@@ -93,56 +93,52 @@ class NoiseComponent extends React.Component {
    }
 }
 
-class NoiseSelect extends React.Component {
-  render() {
-    const {prevNoise, noises, currentType, nextNoise} = this.props;
-    return (
-      <div style={{textAlign: "center"}}>
-        <ArrowLeftIcon
-          style={styles.icon}
-          onClick={prevNoise}
-        />
-        <div style={{display: "inline-block", width: "70px"}}>{noises[currentType]}</div>
-        <ArrowRightIcon
-          style={styles.icon}
-          onClick={prevNoise}
-        />
-      </div>
-    );
-  }
-}
+const NoiseSelect = props => {
+  const {prevNoise, noises, currentType, nextNoise} = props;
+  return (
+    <div style={{textAlign: "center"}}>
+      <ArrowLeftIcon
+        style={styles.icon}
+        onClick={prevNoise}
+      />
+      <div style={{display: "inline-block", width: "70px"}}>{noises[currentType]}</div>
+      <ArrowRightIcon
+        style={styles.icon}
+        onClick={prevNoise}
+      />
+    </div>
+  );
+};
 
-class NoiseControls extends React.Component {
-  render() {
-    const {volume, frequency, octaves, changeVolume, changeFreq, changeOctaves} = this.props;
-    return (
-      <div>
+const NoiseControls = props => {
+  const {volume, frequency, octaves, changeVolume, changeFreq, changeOctaves} = props;
+  return (
+    <div>
         volume<Slider
-          style={{width: "100px"}}
-          min={-60}
-          defaultValue={volume}
-          max={10} 
-          step={3.5}
-          onChange={value => changeVolume(parseFloat(value))}
-        />
+        style={{width: "100px"}}
+        min={-60}
+        defaultValue={volume}
+        max={10} 
+        step={3.5}
+        onChange={value => changeVolume(parseFloat(value))}
+      />
         frequency<Slider
-          style={{width: "100px"}}
-          min={0}
-          defaultValue={frequency}
-          max={300} 
-          step={1}
-          onChange={value => changeFreq(parseFloat(value))}
-        />
+        style={{width: "100px"}}
+        min={0}
+        defaultValue={frequency}
+        max={300} 
+        step={1}
+        onChange={value => changeFreq(parseFloat(value))}
+      />
         octaves<Slider
-          style={{width: "100px"}}
-          min={0}
-          defaultValue={octaves}
-          max={10} 
-          step={0.1}
-          onChange={value => changeOctaves(parseFloat(value))}
-        />
-      </div>
-    );
-  }
-}
+        style={{width: "100px"}}
+        min={0}
+        defaultValue={octaves}
+        max={10} 
+        step={0.1}
+        onChange={value => changeOctaves(parseFloat(value))}
+      />
+    </div>
+  );
+};
 export default NoiseComponent;
