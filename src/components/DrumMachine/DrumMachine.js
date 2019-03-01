@@ -63,27 +63,25 @@ class MusicBox extends React.Component {
     // Change maser volume
     Tone.Master.volume.value= this.state.masterVolume;
      
-    // Recording functionality
-    this.audio = React.createRef();
-    this.myRef = React.createRef();
-    const actx  = Tone.context;
-    const dest  = actx.createMediaStreamDestination();
-    this.recorder = new MediaRecorder(dest.stream);
-    Tone.Master.connect(dest);
-    const chunks = [];
-    this.recorder.ondataavailable = evt => chunks.push(evt.data);
-    this.recorder.onstop = evt => {
-      let blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-      this.audio.current.src = URL.createObjectURL(blob);
-      this.myRef.current.href =  URL.createObjectURL(blob);
-    };
   }
+
   componentDidMount() {
     window.addEventListener("keydown", this.handleKeyboardInput.bind(this));
   }
+
   componentWillUnmount() {
     window.removeEventListener("keydown", this.handleKeyboardInput.bind(this));
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    Object.entries(this.props).forEach(([key, val]) =>
+      prevProps[key] !== val && console.log(`Prop '${key}' changed`)
+    );
+    Object.entries(this.state).forEach(([key, val]) =>
+      prevState[key] !== val && console.log(`State '${key}' changed`)
+    );
+  }
+
   handleKeyboardInput = e => {
     const code = e.keyCode ? e.keyCode : e.which;
     switch (code) {
@@ -182,7 +180,7 @@ class MusicBox extends React.Component {
         };
         updateTracks = (newTracks) => {
           this.loop = loopControls.update(this.loop, newTracks, this.updateCurrentBeat);
-          this.setState({tracks: newTracks});
+          this.setState({tracks: [...newTracks]});
         };
         toggleTrackBeat = (id, beat) => {
           const {tracks} = this.state;
@@ -267,6 +265,12 @@ class MusicBox extends React.Component {
                   toggleTrackBeat={this.toggleTrackBeat}
                 />
               </div>
+              <button
+                style={this.state.patternMode ?{backgroundColor: "#283845"} : {backgroundColor: "#B8B08D"}}
+                onClick={this.updatePatternMode} 
+              >
+                    PT MODE
+              </button>
               <CustomButton 
                 source={this.loop}
                 click={"Play"}

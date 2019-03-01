@@ -31,7 +31,7 @@ const styles = {
   }
 };
 
-class OneshotComponent extends React.Component {
+class OneshotComponent extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

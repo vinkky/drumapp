@@ -9,6 +9,7 @@ import TracksComponent from "./Components/TracksComponent";
 import OneShotComponent from "./Components/OneshotComponent";
 import NoiseComponent from "./Components/NoiseComponent";
 import EffectsComponent from "./Components/EffectsComponent";
+import AutomationComponent from "./Components/AutomationComponent";
 import { CircleSlider } from "react-circle-slider";
 import Slider, { Range } from "rc-slider";
 import MusicBox from "./DrumMachine";
@@ -38,7 +39,6 @@ class DrumMachine extends React.Component {
     this.state = {
       index: 0,
       bpm: 120,
-      setState: 0,
       selectedTrack: 0, 
       currentBeat: -1,
       locked: false,
@@ -64,24 +64,24 @@ class DrumMachine extends React.Component {
     const dest  = actx.createMediaStreamDestination();
     this.recorder = new MediaRecorder(dest.stream);
     Tone.Master.connect(dest);
-    const chunks = [];
-    this.recorder.ondataavailable = evt => chunks.push(evt.data);
+    this.chunks = [];
+
+    this.recorder.ondataavailable = evt => this.chunks.push(evt.data);
     this.recorder.onstop = evt => {
-      let blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+      let blob = new Blob(this.chunks, { type: "audio/ogg; codecs=opus" });
       this.audio.current.src = URL.createObjectURL(blob);
       this.myRef.current.href =  URL.createObjectURL(blob);
-      this.setState({stop: this.state.stop + 1});
+      this.chunks = [];
     };
   }
-
       
-
   render() {
     return (
       <div className="wrapper">
         <div className="flex-grid-thirds">
           <div className="col"> <NoiseComponent/></div>
           <div className="col"><EffectsComponent/></div>
+          <div className="col"><AutomationComponent/></div>
           <div className="col">            <div className="AudioPlayer">
             <audio ref={this.audio} controls controlsList="nodownload" autostart="0"></audio>
           </div>
@@ -142,7 +142,6 @@ class DrumMachine extends React.Component {
         </div>
         <Tables/>
       </div>
-
     );
   }
 }

@@ -22,7 +22,7 @@ const style = {
   }
 };
 
-class EffectsComponent extends React.Component {
+class EffectsComponent extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -77,7 +77,6 @@ class EffectsComponent extends React.Component {
      }else {
        this.autoFilter.wet.value = this.state.wet;
      }
-     console.log(this.state.checked);
    };
    render() {
      return (
