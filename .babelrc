@@ -5,5 +5,9 @@
      "react-native", "es2015", "stage-0"
     ],
     "sourceMaps": true,
-    "plugins": ["transform-object-rest-spread", "transform-decorators-legacy"]
+    "plugins": ["transform-object-rest-spread", "transform-decorators-legacy",
+      ["transform-runtime", {
+        "polyfill": false,
+        "regenerator": true
+      }]]
   }
