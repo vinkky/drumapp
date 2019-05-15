@@ -16,9 +16,9 @@ class TracksComponent extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		Object.entries(this.props).forEach(
-			([ key, val ]) => prevProps[key] !== val && console.log(`Prop '${key}' changed`)
-		);
+		// Object.entries(this.props).forEach(
+		// 	([ key, val ]) => prevProps[key] !== val && console.log(`Prop '${key}' changed`)
+		// );
 	}
 
 	render() {

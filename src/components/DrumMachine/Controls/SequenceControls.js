@@ -15,7 +15,9 @@ export function updateBPM(bpm) {
 }
 
 export function update(loop, tracks, beatNotifier) {
+	console.time('test');
 	loop.callback = loopProcessor(tracks, beatNotifier);
+	console.timeEnd('test');
 	return loop;
 }
 const waitFor = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -40,12 +42,13 @@ function loopProcessor(tracks, beatNotifier) {
 	const keys = new Tone.Players(urls, {
 		fadeOut: '64n'
 	}).toMaster();
+
 	return (time, index) => {
 		beatNotifier(index);
 		const start = async (index) => {
 			await asyncForEach(tracks, async ({ name, vol, muted, note, beats }) => {
 				if (beats[index]) {
-					await waitFor(50);
+					// await waitFor(50);
 					try {
 						keys.get(name).start(time + 0.24, 0, note).volume.value = muted
 							? -Infinity

@@ -142,12 +142,12 @@ class MusicBox extends React.Component {
 		this.props.table.unSubscribe
 			? window.removeEventListener('keydown', this.handleKeyboardInput)
 			: window.addEventListener('keydown', this.handleKeyboardInput);
-		Object.entries(this.props).forEach(
-			([ key, val ]) => prevProps[key] !== val && console.log(`Prop '${key}' changed`)
-		);
-		Object.entries(this.state).forEach(
-			([ key, val ]) => prevState[key] !== val && console.log(`State '${key}' changed`)
-		);
+		// Object.entries(this.props).forEach(
+		// 	([ key, val ]) => prevProps[key] !== val && console.log(`Prop '${key}' changed`)
+		// );
+		// Object.entries(this.state).forEach(
+		// 	([ key, val ]) => prevState[key] !== val && console.log(`State '${key}' changed`)
+		// );
 	}
 
 	handleKeyboardInput = (e) => {
